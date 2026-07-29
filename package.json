@@ -1,0 +1,10 @@
+{
+  "name": "mon-premier-livre",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Site Mon Premier Livre — fonctions serveur pour le paiement Stripe",
+  "dependencies": {
+    "stripe": "^17.0.0",
+    "@supabase/supabase-js": "^2.45.0"
+  }
+}

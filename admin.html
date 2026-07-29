@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Administration — Mon Premier Livre</title>
+<meta name="robots" content="noindex, nofollow">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{
+    --cream:#faf6f0; --cream-2:#f2ebe1; --ink:#2e2a26; --accent:#c98a5e;
+    --accent-dark:#a96d45; --green:#5f7a5f; --red:#b3564a; --radius:14px;
+    --border:#e4dccf;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    background:var(--cream); color:var(--ink); padding:24px;
+  }
+  .wrap{max-width:920px; margin:0 auto}
+  h1{font-size:22px; margin-bottom:4px}
+  .sub{color:#8a8175; font-size:14px; margin-bottom:28px}
+  .card{
+    background:#fff; border:1px solid var(--border); border-radius:var(--radius);
+    padding:24px; margin-bottom:24px;
+  }
+  label{display:block; font-size:13px; font-weight:600; margin:14px 0 6px}
+  input, textarea, select{
+    width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px;
+    font-size:14px; font-family:inherit; background:var(--cream);
+  }
+  textarea{min-height:70px; resize:vertical}
+  .row{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  .row3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px}
+  @media (max-width:640px){ .row, .row3{grid-template-columns:1fr} }
+  button{
+    cursor:pointer; border:none; border-radius:8px; padding:10px 20px;
+    font-size:14px; font-weight:600; font-family:inherit;
+  }
+  .btn-primary{background:var(--accent); color:#fff}
+  .btn-primary:hover{background:var(--accent-dark)}
+  .btn-ghost{background:transparent; border:1px solid var(--border); color:var(--ink)}
+  .btn-danger{background:#fff; color:var(--red); border:1px solid var(--red)}
+  .btn-sm{padding:6px 12px; font-size:12px}
+  #login-box{max-width:360px; margin:80px auto}
+  #app{display:none}
+  .msg{font-size:13px; margin-top:10px}
+  .msg.ok{color:var(--green)}
+  .msg.err{color:var(--red)}
+  table{width:100%; border-collapse:collapse; font-size:13px}
+  th, td{text-align:left; padding:10px 8px; border-bottom:1px solid var(--border)}
+  th{color:#8a8175; font-weight:600; font-size:12px; text-transform:uppercase}
+  .pill{
+    display:inline-block; padding:3px 9px; border-radius:20px; font-size:11px; font-weight:600;
+  }
+  .pill.on{background:#e8f0e6; color:var(--green)}
+  .pill.off{background:#f3e6e3; color:var(--red)}
+  .pill.promo{background:#f6e3d8; color:var(--accent-dark)}
+  .actions{display:flex; gap:6px; flex-wrap:wrap}
+  .thumb{width:40px; height:40px; object-fit:cover; border-radius:6px; background:var(--cream-2)}
+  #logout{float:right; font-size:13px; background:none; border:none; color:#8a8175; text-decoration:underline; padding:0}
+  .top-row{display:flex; justify-content:space-between; align-items:center; margin-bottom:24px}
+  .required{color:var(--red)}
+  .checkbox-row{display:flex; align-items:center; gap:8px; margin-top:14px}
+  .checkbox-row input{width:auto}
+  .checkbox-row label{margin:0; font-weight:600}
+  fieldset{border:1px dashed var(--border); border-radius:10px; padding:14px 16px; margin-top:16px}
+  fieldset legend{font-size:13px; font-weight:700; padding:0 6px; color:var(--accent-dark)}
+  .rich-toolbar{display:flex; gap:8px; margin-bottom:6px}
+  .rich-toolbar button{
+    background:var(--cream-2); color:var(--ink); font-size:12px; padding:6px 10px; border:1px solid var(--border);
+  }
+  .rich-box{
+    min-height:140px; border:1px solid var(--border); border-radius:8px; padding:12px;
+    background:var(--cream); font-size:14px; line-height:1.5; overflow-y:auto;
+  }
+  .rich-box:focus{outline:2px solid var(--accent)}
+  .rich-box img{max-width:100%; border-radius:8px; margin:6px 0; display:block}
+  .rich-box p{margin:0 0 10px}
+</style>
+</head>
+<body>
+
+<div id="login-box" class="card">
+  <h1>Administration</h1>
+  <p class="sub">Mon Premier Livre — accès réservé</p>
+  <label>E-mail</label>
+  <input type="email" id="login-email" autocomplete="username">
+  <label>Mot de passe</label>
+  <input type="password" id="login-password" autocomplete="current-password">
+  <button class="btn-primary" style="margin-top:18px; width:100%" onclick="doLogin()">Se connecter</button>
+  <div id="login-msg" class="msg"></div>
+</div>
+
+<div id="app" class="wrap">
+  <div class="top-row">
+    <div>
+      <h1>Gestion des produits</h1>
+      <p class="sub">Ajoute, modifie ou dépublie un livre — les changements apparaissent sur le site en quelques secondes.</p>
+    </div>
+    <button id="logout" onclick="doLogout()">Se déconnecter</button>
+  </div>
+
+  <div class="card">
+    <h2 id="form-title" style="margin-top:0">Ajouter un nouveau livre</h2>
+    <form id="product-form" onsubmit="return false">
+      <input type="hidden" id="p-id">
+
+      <label>Nom du livre (FR) <span class="required">*</span></label>
+      <input type="text" id="p-name" required>
+
+      <label>Book name (EN) <span class="required">*</span></label>
+      <input type="text" id="p-name-en" required>
+
+      <div class="row">
+        <div>
+          <label>Prix (€) <span class="required">*</span></label>
+          <input type="number" id="p-price" step="0.01" value="30.00" required>
+        </div>
+        <div>
+          <label>Statut</label>
+          <select id="p-published">
+            <option value="true">Publié (visible sur le site)</option>
+            <option value="false">Brouillon (masqué)</option>
+          </select>
+        </div>
+      </div>
+
+      <fieldset>
+        <legend>Réduction</legend>
+        <div class="checkbox-row">
+          <input type="checkbox" id="p-discount-active">
+          <label for="p-discount-active">Activer une réduction sur ce livre</label>
+        </div>
+        <label>Prix réduit (€)</label>
+        <input type="number" id="p-discount-price" step="0.01" placeholder="ex : 24.00">
+        <p style="font-size:12px;color:#8a8175;margin:6px 0 0">
+          Si activée, le site affichera le prix normal barré et ce prix réduit à la place.
+        </p>
+      </fieldset>
+
+      <div class="row">
+        <div>
+          <label>Âge conseillé (FR)</label>
+          <input type="text" id="p-age" placeholder="ex : 1 - 4 ans">
+        </div>
+        <div>
+          <label>Age (EN)</label>
+          <input type="text" id="p-age-en" placeholder="e.g. 1 - 4 years">
+        </div>
+      </div>
+
+      <label>Description courte (FR)</label>
+      <textarea id="p-short"></textarea>
+      <label>Short description (EN)</label>
+      <textarea id="p-short-en"></textarea>
+
+      <label>Description longue (FR)</label>
+      <div class="rich-toolbar">
+        <button type="button" onclick="insertImageInRich('p-long')">🖼️ Insérer une image</button>
+      </div>
+      <div id="p-long" class="rich-box" contenteditable="true"></div>
+
+      <label>Long description (EN)</label>
+      <div class="rich-toolbar">
+        <button type="button" onclick="insertImageInRich('p-long-en')">🖼️ Insert an image</button>
+      </div>
+      <div id="p-long-en" class="rich-box" contenteditable="true"></div>
+
+      <div class="row">
+        <div>
+          <label>Entretien (FR)</label>
+          <input type="text" id="p-care" placeholder="Lavable en machine à 30°C...">
+        </div>
+        <div>
+          <label>Care instructions (EN)</label>
+          <input type="text" id="p-care-en" placeholder="Machine washable at 30°C...">
+        </div>
+      </div>
+
+      <label>Tags (séparés par des virgules)</label>
+      <input type="text" id="p-tags" placeholder="ex : animaux, best-seller">
+
+      <label>Photo principale du produit</label>
+      <input type="file" id="p-image-file" accept="image/*">
+      <div id="p-image-preview" style="margin-top:8px"></div>
+
+      <div style="margin-top:22px; display:flex; gap:10px">
+        <button class="btn-primary" onclick="saveProduct()">Enregistrer</button>
+        <button class="btn-ghost" type="button" onclick="resetForm()">Annuler / nouveau produit</button>
+      </div>
+      <div id="form-msg" class="msg"></div>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">Livres existants</h2>
+    <table>
+      <thead>
+        <tr><th></th><th>Nom</th><th>Prix</th><th>Statut</th><th></th></tr>
+      </thead>
+      <tbody id="product-list"><tr><td colspan="5">Chargement…</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = "https://exhlwztwbukaevlmkhta.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_Tk2upQykwis-EE_zgWfHjQ_Lrymxsn5";
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+function slugify(text){
+  return text.toString().toLowerCase()
+    .normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+
+async function checkSession(){
+  const { data } = await sb.auth.getSession();
+  if(data.session){
+    document.getElementById("login-box").style.display = "none";
+    document.getElementById("app").style.display = "block";
+    loadProducts();
+  } else {
+    document.getElementById("login-box").style.display = "block";
+    document.getElementById("app").style.display = "none";
+  }
+}
+
+async function doLogin(){
+  const email = document.getElementById("login-email").value.trim();
+  const password = document.getElementById("login-password").value;
+  const msg = document.getElementById("login-msg");
+  msg.textContent = "Connexion…"; msg.className = "msg";
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+  if(error){
+    msg.textContent = "Erreur : " + error.message;
+    msg.className = "msg err";
+  } else {
+    msg.textContent = "";
+    checkSession();
+  }
+}
+
+async function doLogout(){
+  await sb.auth.signOut();
+  checkSession();
+}
+
+function resetForm(){
+  document.getElementById("product-form").reset();
+  document.getElementById("p-id").value = "";
+  document.getElementById("p-price").value = "30.00";
+  document.getElementById("p-discount-active").checked = false;
+  document.getElementById("p-discount-price").value = "";
+  document.getElementById("p-long").innerHTML = "";
+  document.getElementById("p-long-en").innerHTML = "";
+  document.getElementById("p-image-preview").innerHTML = "";
+  document.getElementById("form-title").textContent = "Ajouter un nouveau livre";
+  document.getElementById("form-msg").textContent = "";
+}
+
+async function loadProducts(){
+  const { data, error } = await sb.from("products").select("*").order("created_at", { ascending: false });
+  const tbody = document.getElementById("product-list");
+  if(error){ tbody.innerHTML = "<tr><td colspan='5'>Erreur de chargement</td></tr>"; return; }
+  if(!data.length){ tbody.innerHTML = "<tr><td colspan='5'>Aucun produit pour le moment.</td></tr>"; return; }
+  tbody.innerHTML = data.map(p => `
+    <tr>
+      <td>${p.image_url ? `<img class="thumb" src="${p.image_url}">` : ""}</td>
+      <td>${p.name}</td>
+      <td>
+        ${p.discount_active && p.discount_price
+          ? `<span style="text-decoration:line-through;color:#8a8175">${Number(p.price).toFixed(2)} €</span> <span class="pill promo">${Number(p.discount_price).toFixed(2)} €</span>`
+          : `${Number(p.price).toFixed(2)} €`}
+      </td>
+      <td><span class="pill ${p.published ? "on" : "off"}">${p.published ? "Publié" : "Brouillon"}</span></td>
+      <td class="actions">
+        <button class="btn-ghost btn-sm" onclick='editProduct(${JSON.stringify(p).replace(/'/g, "&apos;")})'>Modifier</button>
+        <button class="btn-ghost btn-sm" onclick="togglePublished('${p.id}', ${!p.published})">${p.published ? "Dépublier" : "Publier"}</button>
+        <button class="btn-danger btn-sm" onclick="deleteProduct('${p.id}', '${p.name.replace(/'/g,"")}')">Supprimer</button>
+      </td>
+    </tr>
+  `).join("");
+}
+
+function editProduct(p){
+  document.getElementById("form-title").textContent = "Modifier : " + p.name;
+  document.getElementById("p-id").value = p.id;
+  document.getElementById("p-name").value = p.name || "";
+  document.getElementById("p-name-en").value = p.name_en || "";
+  document.getElementById("p-price").value = p.price || 30;
+  document.getElementById("p-discount-active").checked = !!p.discount_active;
+  document.getElementById("p-discount-price").value = p.discount_price || "";
+  document.getElementById("p-published").value = String(!!p.published);
+  document.getElementById("p-age").value = p.age || "";
+  document.getElementById("p-age-en").value = p.age_en || "";
+  document.getElementById("p-short").value = p.short || "";
+  document.getElementById("p-short-en").value = p.short_en || "";
+  document.getElementById("p-long").innerHTML = p.long_desc || "";
+  document.getElementById("p-long-en").innerHTML = p.long_desc_en || "";
+  document.getElementById("p-care").value = p.care || "";
+  document.getElementById("p-care-en").value = p.care_en || "";
+  document.getElementById("p-tags").value = (p.tags || []).join(", ");
+  document.getElementById("p-image-preview").innerHTML = p.image_url ? `<img class="thumb" src="${p.image_url}">` : "";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+async function togglePublished(id, newValue){
+  const { error } = await sb.from("products").update({ published: newValue }).eq("id", id);
+  if(error){ alert("Erreur : " + error.message); return; }
+  loadProducts();
+}
+
+async function deleteProduct(id, name){
+  if(!confirm(`Supprimer définitivement "${name}" ?`)) return;
+  const { error } = await sb.from("products").delete().eq("id", id);
+  if(error){ alert("Erreur : " + error.message); return; }
+  loadProducts();
+}
+
+async function uploadImageIfNeeded(){
+  const fileInput = document.getElementById("p-image-file");
+  if(!fileInput.files || !fileInput.files[0]) return null;
+  const file = fileInput.files[0];
+  const path = `${Date.now()}-${slugify(file.name)}`;
+  const { error } = await sb.storage.from("product-images").upload(path, file, { upsert: true });
+  if(error){ throw error; }
+  const { data } = sb.storage.from("product-images").getPublicUrl(path);
+  return data.publicUrl;
+}
+
+// Insère une image directement dans la zone de description (FR ou EN), à l'endroit du curseur.
+async function insertImageInRich(boxId){
+  const box = document.getElementById(boxId);
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "image/*";
+  input.onchange = async () => {
+    if(!input.files || !input.files[0]) return;
+    const file = input.files[0];
+    box.focus();
+    const path = `desc-${Date.now()}-${slugify(file.name)}`;
+    try {
+      const { error } = await sb.storage.from("product-images").upload(path, file, { upsert: true });
+      if(error) throw error;
+      const { data } = sb.storage.from("product-images").getPublicUrl(path);
+      document.execCommand("insertHTML", false, `<img src="${data.publicUrl}" alt="">`);
+    } catch(e){
+      alert("Erreur lors de l'ajout de l'image : " + e.message);
+    }
+  };
+  input.click();
+}
+
+async function saveProduct(){
+  const msg = document.getElementById("form-msg");
+  msg.textContent = "Enregistrement…"; msg.className = "msg";
+
+  const name = document.getElementById("p-name").value.trim();
+  const nameEn = document.getElementById("p-name-en").value.trim();
+  if(!name || !nameEn){
+    msg.textContent = "Le nom (FR et EN) est obligatoire.";
+    msg.className = "msg err";
+    return;
+  }
+
+  let imageUrl = null;
+  try {
+    imageUrl = await uploadImageIfNeeded();
+  } catch(e){
+    msg.textContent = "Erreur photo : " + e.message;
+    msg.className = "msg err";
+    return;
+  }
+
+  const id = document.getElementById("p-id").value;
+  const tags = document.getElementById("p-tags").value.split(",").map(t => t.trim()).filter(Boolean);
+  const discountPriceRaw = document.getElementById("p-discount-price").value;
+
+  const payload = {
+    name, name_en: nameEn,
+    price: parseFloat(document.getElementById("p-price").value) || 0,
+    discount_active: document.getElementById("p-discount-active").checked,
+    discount_price: discountPriceRaw ? parseFloat(discountPriceRaw) : null,
+    published: document.getElementById("p-published").value === "true",
+    age: document.getElementById("p-age").value.trim(),
+    age_en: document.getElementById("p-age-en").value.trim(),
+    short: document.getElementById("p-short").value.trim(),
+    short_en: document.getElementById("p-short-en").value.trim(),
+    long_desc: document.getElementById("p-long").innerHTML.trim(),
+    long_desc_en: document.getElementById("p-long-en").innerHTML.trim(),
+    care: document.getElementById("p-care").value.trim(),
+    care_en: document.getElementById("p-care-en").value.trim(),
+    tags,
+  };
+  if(imageUrl) payload.image_url = imageUrl;
+
+  let error;
+  if(id){
+    ({ error } = await sb.from("products").update(payload).eq("id", id));
+  } else {
+    payload.slug = slugify(name) + "-" + Date.now().toString(36);
+    ({ error } = await sb.from("products").insert(payload));
+  }
+
+  if(error){
+    msg.textContent = "Erreur : " + error.message;
+    msg.className = "msg err";
+    return;
+  }
+  msg.textContent = "Enregistré avec succès !";
+  msg.className = "msg ok";
+  resetForm();
+  loadProducts();
+}
+
+checkSession();
+</script>
+</body>
+</html>

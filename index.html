@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Livres en feutrine à déchirer pour bébé | Mon Premier Livre</title>
+<meta name="description" content="Mon Premier Livre : des livres en feutrine sensoriels et increvables, pensés pour éveiller le goût de lire dès les premiers mois.">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-180.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="nav-cluster">
+      <nav class="main-nav main-nav-left">
+        <a href="index.html" data-i18n="nav_home">Accueil</a>
+        <a href="produits.html" data-i18n="nav_shop">Nos livres</a>
+      </nav>
+      <a href="index.html" class="logo-link">
+        <img src="assets/logo-full.png" alt="Mon Premier Livre" class="logo-img">
+      </a>
+      <nav class="main-nav main-nav-right">
+        <a href="faq.html" data-i18n="nav_faq">FAQ</a>
+        <a href="blog.html" data-i18n="nav_blog">Blog</a>
+      </nav>
+    </div>
+    <div class="header-actions">
+      <div class="lang-toggle">
+        <button data-lang="fr" class="active">FR</button>
+        <button data-lang="en">EN</button>
+      </div>
+      <a href="compte.html" class="btn btn-ghost btn-small account-btn" title="Mon compte">
+        <svg class="icon " width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-6.2 7-6.2s7 2.6 7 6.2"/></svg> <span data-i18n="nav_account">Mon compte</span>
+      </a>
+      <a href="panier.html" class="icon-link" title="Panier">
+        <svg class="icon " width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l1 12.5a1 1 0 0 1-1 1.1H6a1 1 0 0 1-1-1.1L6 8Z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>
+        <span class="badge" data-cart-badge style="display:none">0</span>
+      </a>
+      <button class="burger"><svg class="icon " width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<section class="hero" style="padding:0">
+  <div class="hero-media">
+    <div class="hero-text">
+      <h1 data-i18n="hero_title"><span class="nowrap-line">Des livres en feutrine à déchirer,</span><br><span class="nowrap-line">pour éveiller le goût de lire</span></h1>
+      <p data-i18n="hero_sub">Des histoires douces, sensorielles et increvables, pensées pour les tout-petits.</p>
+      <a href="produits.html" class="btn btn-primary" data-i18n="hero_cta">Découvrir la collection</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <h2 data-i18n="bestsellers">Nos best-sellers</h2>
+      <p data-i18n="bestsellers_sub">Les livres préférés des familles</p>
+    </div>
+    <div class="product-grid" data-shop-grid data-shop-tag="best-seller" data-shop-limit="4"></div>
+    <div style="text-align:center;margin-top:36px">
+      <a href="produits.html" class="btn btn-outline" data-i18n="view_all">Voir tous nos livres</a>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--cream-2)">
+  <div class="container founder">
+    <div class="founder-media">
+      <img src="assets/founder.jpg" alt="Camille, fondatrice de Mon Premier Livre, avec son fils">
+    </div>
+    <div class="founder-text">
+      <div data-lang-block="fr">
+        <h2>Notre histoire</h2>
+        <p>Je m'appelle Camille, je suis maman d'un petit garçon et professionnelle de l'éducation depuis plus de 10 ans. J'ai accompagné plusieurs centaines d'enfants dans leurs premiers apprentissages, et j'ai toujours été convaincue d'une chose : le goût de la lecture se construit dès les tout premiers mois, bien avant de savoir lire.</p>
+        <p>En cherchant des livres pour mon propre fils, j'ai réalisé qu'il manquait, sur le marché, des livres pensés pour être vraiment manipulés : déchirés, mordillés, lavés, recommencés. C'est de ce constat qu'est née Mon Premier Livre : des livres en feutrine doux, résistants et sensoriels, conçus pour accompagner les tout-petits vers le plaisir de lire, une page à la fois.</p>
+        <p class="signature">— Camille, fondatrice de Mon Premier Livre</p>
+      </div>
+      <div data-lang-block="en" style="display:none">
+        <h2>Our story</h2>
+        <p>My name is Camille, I'm mum to a little boy and I've worked in education for over 10 years. I've supported several hundred children in their earliest learning, and I've always been convinced of one thing: a love of reading is built from the very first months, long before a child can actually read.</p>
+        <p>While looking for books for my own son, I realised the market was missing books designed to be truly handled: torn, chewed, washed, started over. That's how Mon Premier Livre was born: soft, sturdy, sensory felt books, designed to guide little ones toward the pleasure of reading, one page at a time.</p>
+        <p class="signature">— Camille, founder of Mon Premier Livre</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <h2>Elles nous font confiance</h2>
+      <p>Plus de 100 familles partagent leur expérience</p>
+    </div>
+  </div>
+  <div class="reviews-wrap">
+    <div class="reviews-track">
+      <div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Mon fils l'emmène partout, même à la crèche. Résiste bien au lavage en machine. »</p>
+      <div class="meta"><strong>Camille A.</strong> <span>— il y a 1 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Livre magnifique, les finitions sont soignées. Je recommande sans hésiter. »</p>
+      <div class="meta"><strong>Léa H.</strong> <span>— il y a 6 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“My son takes it everywhere, even to nursery. Holds up well in the washing machine.”</p>
+      <div class="meta"><strong>Emma O.</strong> <span>— 11 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Idéal pour les petites mains, ma fille apprend les couleurs en s'amusant. »</p>
+      <div class="meta"><strong>Manon V.</strong> <span>— il y a 16 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Le format est parfait pour les trajets en voiture, silencieux et incassable. »</p>
+      <div class="meta"><strong>Chloé C.</strong> <span>— il y a 21 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“Beautiful book, the finishing is very neat. I recommend it without hesitation.”</p>
+      <div class="meta"><strong>Olivia J.</strong> <span>— 26 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Le concept de pages à déchirer est génial, ça occupe vraiment longtemps mon petit. »</p>
+      <div class="meta"><strong>Aminata Q.</strong> <span>— il y a 31 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Ma fille de 18 mois adore déchirer et recoller les pages, elle ne s'en lasse pas. La matière est vraiment agréable au toucher. »</p>
+      <div class="meta"><strong>Sarah X.</strong> <span>— il y a 36 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Mon fils l'emmène partout, même à la crèche. Résiste bien au lavage en machine. »</p>
+      <div class="meta"><strong>Julie E.</strong> <span>— il y a 1 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“Ideal for little hands, my daughter is learning her colours while having fun.”</p>
+      <div class="meta"><strong>Sophia L.</strong> <span>— 6 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Livre magnifique, les finitions sont soignées. Je recommande sans hésiter. »</p>
+      <div class="meta"><strong>Emma S.</strong> <span>— il y a 11 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Idéal pour les petites mains, ma fille apprend les couleurs en s'amusant. »</p>
+      <div class="meta"><strong>Lucie Z.</strong> <span>— il y a 16 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>“The size is perfect for car journeys, silent and unbreakable.”</p>
+      <div class="meta"><strong>Isabella G.</strong> <span>— 21 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Le format est parfait pour les trajets en voiture, silencieux et incassable. »</p>
+      <div class="meta"><strong>Marie N.</strong> <span>— il y a 26 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Ma fille de 18 mois adore déchirer et recoller les pages, elle ne s'en lasse pas. La matière est vraiment agréable au toucher. »</p>
+      <div class="meta"><strong>Alice U.</strong> <span>— il y a 31 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“My 18-month-old daughter loves tearing off and reattaching the pages, she never gets tired of it. The material is really pleasant to the touch.”</p>
+      <div class="meta"><strong>Mia B.</strong> <span>— 36 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Mon fils l'emmène partout, même à la crèche. Résiste bien au lavage en machine. »</p>
+      <div class="meta"><strong>Pauline I.</strong> <span>— il y a 1 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Livre magnifique, les finitions sont soignées. Je recommande sans hésiter. »</p>
+      <div class="meta"><strong>Charlotte P.</strong> <span>— il y a 6 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Idéal pour les petites mains, ma fille apprend les couleurs en s'amusant. »</p>
+      <div class="meta"><strong>Laura W.</strong> <span>— il y a 11 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Le format est parfait pour les trajets en voiture, silencieux et incassable. »</p>
+      <div class="meta"><strong>Anaïs D.</strong> <span>— il y a 16 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Ma fille de 18 mois adore déchirer et recoller les pages, elle ne s'en lasse pas. La matière est vraiment agréable au toucher. »</p>
+      <div class="meta"><strong>Justine K.</strong> <span>— il y a 21 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Mon fils l'emmène partout, même à la crèche. Résiste bien au lavage en machine. »</p>
+      <div class="meta"><strong>Claire R.</strong> <span>— il y a 26 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“My son takes it everywhere, even to nursery. Holds up well in the washing machine.”</p>
+      <div class="meta"><strong>Ava Y.</strong> <span>— 31 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Livre magnifique, les finitions sont soignées. Je recommande sans hésiter. »</p>
+      <div class="meta"><strong>Sophie F.</strong> <span>— il y a 36 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Idéal pour les petites mains, ma fille apprend les couleurs en s'amusant. »</p>
+      <div class="meta"><strong>Élise M.</strong> <span>— il y a 1 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“Beautiful book, the finishing is very neat. I recommend it without hesitation.”</p>
+      <div class="meta"><strong>Grace T.</strong> <span>— 6 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« J'ai offert ce livre à ma nièce, elle et sa maman ont adoré le rendu et la douceur du tissu. »</p>
+      <div class="meta"><strong>Fatou A.</strong> <span>— il y a 11 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Le format est parfait pour les trajets en voiture, silencieux et incassable. »</p>
+      <div class="meta"><strong>Margaux H.</strong> <span>— il y a 16 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Ma fille de 18 mois adore déchirer et recoller les pages, elle ne s'en lasse pas. La matière est vraiment agréable au toucher. »</p>
+      <div class="meta"><strong>Inès O.</strong> <span>— il y a 21 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“Ideal for little hands, my daughter is learning her colours while having fun.”</p>
+      <div class="meta"><strong>Lily V.</strong> <span>— 26 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Mon fils l'emmène partout, même à la crèche. Résiste bien au lavage en machine. »</p>
+      <div class="meta"><strong>Nathan C.</strong> <span>— il y a 31 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Livre magnifique, les finitions sont soignées. Je recommande sans hésiter. »</p>
+      <div class="meta"><strong>Thomas J.</strong> <span>— il y a 36 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>“The size is perfect for car journeys, silent and unbreakable.”</p>
+      <div class="meta"><strong>Zoe Q.</strong> <span>— 1 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Idéal pour les petites mains, ma fille apprend les couleurs en s'amusant. »</p>
+      <div class="meta"><strong>Julien X.</strong> <span>— il y a 6 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Le format est parfait pour les trajets en voiture, silencieux et incassable. »</p>
+      <div class="meta"><strong>Adrien E.</strong> <span>— il y a 11 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“My 18-month-old daughter loves tearing off and reattaching the pages, she never gets tired of it. The material is really pleasant to the touch.”</p>
+      <div class="meta"><strong>Amelia L.</strong> <span>— 16 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Ma fille de 18 mois adore déchirer et recoller les pages, elle ne s'en lasse pas. La matière est vraiment agréable au toucher. »</p>
+      <div class="meta"><strong>Maxime S.</strong> <span>— il y a 21 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Mon fils l'emmène partout, même à la crèche. Résiste bien au lavage en machine. »</p>
+      <div class="meta"><strong>Antoine Z.</strong> <span>— il y a 26 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Livre magnifique, les finitions sont soignées. Je recommande sans hésiter. »</p>
+      <div class="meta"><strong>Hugo G.</strong> <span>— il y a 31 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Idéal pour les petites mains, ma fille apprend les couleurs en s'amusant. »</p>
+      <div class="meta"><strong>Louis N.</strong> <span>— il y a 36 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Le format est parfait pour les trajets en voiture, silencieux et incassable. »</p>
+      <div class="meta"><strong>Paul U.</strong> <span>— il y a 1 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Ma fille de 18 mois adore déchirer et recoller les pages, elle ne s'en lasse pas. La matière est vraiment agréable au toucher. »</p>
+      <div class="meta"><strong>Simon B.</strong> <span>— il y a 6 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“My son takes it everywhere, even to nursery. Holds up well in the washing machine.”</p>
+      <div class="meta"><strong>James I.</strong> <span>— 11 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Mon fils l'emmène partout, même à la crèche. Résiste bien au lavage en machine. »</p>
+      <div class="meta"><strong>Camille P.</strong> <span>— il y a 16 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Livre magnifique, les finitions sont soignées. Je recommande sans hésiter. »</p>
+      <div class="meta"><strong>Léa W.</strong> <span>— il y a 21 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“Beautiful book, the finishing is very neat. I recommend it without hesitation.”</p>
+      <div class="meta"><strong>William D.</strong> <span>— 26 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Ma fille de 18 mois adore déchirer et recoller les pages, elle ne s'en lasse pas. La matière est vraiment agréable au toucher. »</p>
+      <div class="meta"><strong>Mariame K.</strong> <span>— il y a 31 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Idéal pour les petites mains, ma fille apprend les couleurs en s'amusant. »</p>
+      <div class="meta"><strong>Manon R.</strong> <span>— il y a 36 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Le format est parfait pour les trajets en voiture, silencieux et incassable. »</p>
+      <div class="meta"><strong>Chloé Y.</strong> <span>— il y a 1 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“Ideal for little hands, my daughter is learning her colours while having fun.”</p>
+      <div class="meta"><strong>Michael F.</strong> <span>— 6 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Ma fille de 18 mois adore déchirer et recoller les pages, elle ne s'en lasse pas. La matière est vraiment agréable au toucher. »</p>
+      <div class="meta"><strong>Sarah M.</strong> <span>— il y a 11 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Mon fils l'emmène partout, même à la crèche. Résiste bien au lavage en machine. »</p>
+      <div class="meta"><strong>Julie T.</strong> <span>— il y a 16 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>“The size is perfect for car journeys, silent and unbreakable.”</p>
+      <div class="meta"><strong>David A.</strong> <span>— 21 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Livre magnifique, les finitions sont soignées. Je recommande sans hésiter. »</p>
+      <div class="meta"><strong>Emma H.</strong> <span>— il y a 26 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Idéal pour les petites mains, ma fille apprend les couleurs en s'amusant. »</p>
+      <div class="meta"><strong>Lucie O.</strong> <span>— il y a 31 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“My 18-month-old daughter loves tearing off and reattaching the pages, she never gets tired of it. The material is really pleasant to the touch.”</p>
+      <div class="meta"><strong>Daniel V.</strong> <span>— 36 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Le format est parfait pour les trajets en voiture, silencieux et incassable. »</p>
+      <div class="meta"><strong>Marie C.</strong> <span>— il y a 1 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Ma fille de 18 mois adore déchirer et recoller les pages, elle ne s'en lasse pas. La matière est vraiment agréable au toucher. »</p>
+      <div class="meta"><strong>Alice J.</strong> <span>— il y a 6 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Mon fils l'emmène partout, même à la crèche. Résiste bien au lavage en machine. »</p>
+      <div class="meta"><strong>Pauline Q.</strong> <span>— il y a 11 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Livre magnifique, les finitions sont soignées. Je recommande sans hésiter. »</p>
+      <div class="meta"><strong>Charlotte X.</strong> <span>— il y a 16 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Idéal pour les petites mains, ma fille apprend les couleurs en s'amusant. »</p>
+      <div class="meta"><strong>Laura E.</strong> <span>— il y a 21 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Le format est parfait pour les trajets en voiture, silencieux et incassable. »</p>
+      <div class="meta"><strong>Anaïs L.</strong> <span>— il y a 26 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“My son takes it everywhere, even to nursery. Holds up well in the washing machine.”</p>
+      <div class="meta"><strong>Ryan S.</strong> <span>— 31 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Ma fille de 18 mois adore déchirer et recoller les pages, elle ne s'en lasse pas. La matière est vraiment agréable au toucher. »</p>
+      <div class="meta"><strong>Justine Z.</strong> <span>— il y a 36 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Mon fils l'emmène partout, même à la crèche. Résiste bien au lavage en machine. »</p>
+      <div class="meta"><strong>Claire G.</strong> <span>— il y a 1 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“Beautiful book, the finishing is very neat. I recommend it without hesitation.”</p>
+      <div class="meta"><strong>Jack N.</strong> <span>— 6 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Le concept de pages à déchirer est génial, ça occupe vraiment longtemps mon petit. »</p>
+      <div class="meta"><strong>Aïssatou U.</strong> <span>— il y a 11 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Livre magnifique, les finitions sont soignées. Je recommande sans hésiter. »</p>
+      <div class="meta"><strong>Sophie B.</strong> <span>— il y a 16 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Idéal pour les petites mains, ma fille apprend les couleurs en s'amusant. »</p>
+      <div class="meta"><strong>Élise I.</strong> <span>— il y a 21 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“Ideal for little hands, my daughter is learning her colours while having fun.”</p>
+      <div class="meta"><strong>Ethan P.</strong> <span>— 26 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Le format est parfait pour les trajets en voiture, silencieux et incassable. »</p>
+      <div class="meta"><strong>Margaux W.</strong> <span>— il y a 31 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Ma fille de 18 mois adore déchirer et recoller les pages, elle ne s'en lasse pas. La matière est vraiment agréable au toucher. »</p>
+      <div class="meta"><strong>Inès D.</strong> <span>— il y a 36 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>“The size is perfect for car journeys, silent and unbreakable.”</p>
+      <div class="meta"><strong>Noah K.</strong> <span>— 1 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Mon fils l'emmène partout, même à la crèche. Résiste bien au lavage en machine. »</p>
+      <div class="meta"><strong>Nathan R.</strong> <span>— il y a 6 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Livre magnifique, les finitions sont soignées. Je recommande sans hésiter. »</p>
+      <div class="meta"><strong>Thomas Y.</strong> <span>— il y a 11 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“My 18-month-old daughter loves tearing off and reattaching the pages, she never gets tired of it. The material is really pleasant to the touch.”</p>
+      <div class="meta"><strong>Lucas F.</strong> <span>— 16 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Idéal pour les petites mains, ma fille apprend les couleurs en s'amusant. »</p>
+      <div class="meta"><strong>Julien M.</strong> <span>— il y a 21 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Le format est parfait pour les trajets en voiture, silencieux et incassable. »</p>
+      <div class="meta"><strong>Adrien T.</strong> <span>— il y a 26 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Ma fille de 18 mois adore déchirer et recoller les pages, elle ne s'en lasse pas. La matière est vraiment agréable au toucher. »</p>
+      <div class="meta"><strong>Maxime A.</strong> <span>— il y a 31 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Mon fils l'emmène partout, même à la crèche. Résiste bien au lavage en machine. »</p>
+      <div class="meta"><strong>Antoine H.</strong> <span>— il y a 36 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Livre magnifique, les finitions sont soignées. Je recommande sans hésiter. »</p>
+      <div class="meta"><strong>Hugo O.</strong> <span>— il y a 1 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Idéal pour les petites mains, ma fille apprend les couleurs en s'amusant. »</p>
+      <div class="meta"><strong>Louis V.</strong> <span>— il y a 6 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“My son takes it everywhere, even to nursery. Holds up well in the washing machine.”</p>
+      <div class="meta"><strong>Anna C.</strong> <span>— 11 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Le format est parfait pour les trajets en voiture, silencieux et incassable. »</p>
+      <div class="meta"><strong>Paul J.</strong> <span>— il y a 16 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Ma fille de 18 mois adore déchirer et recoller les pages, elle ne s'en lasse pas. La matière est vraiment agréable au toucher. »</p>
+      <div class="meta"><strong>Simon Q.</strong> <span>— il y a 21 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“Beautiful book, the finishing is very neat. I recommend it without hesitation.”</p>
+      <div class="meta"><strong>Hannah X.</strong> <span>— 26 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« J'ai offert ce livre à ma nièce, elle et sa maman ont adoré le rendu et la douceur du tissu. »</p>
+      <div class="meta"><strong>Awa E.</strong> <span>— il y a 31 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Mon fils l'emmène partout, même à la crèche. Résiste bien au lavage en machine. »</p>
+      <div class="meta"><strong>Camille L.</strong> <span>— il y a 36 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Livre magnifique, les finitions sont soignées. Je recommande sans hésiter. »</p>
+      <div class="meta"><strong>Léa S.</strong> <span>— il y a 1 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“Ideal for little hands, my daughter is learning her colours while having fun.”</p>
+      <div class="meta"><strong>Jessica Z.</strong> <span>— 6 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Idéal pour les petites mains, ma fille apprend les couleurs en s'amusant. »</p>
+      <div class="meta"><strong>Manon G.</strong> <span>— il y a 11 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Le format est parfait pour les trajets en voiture, silencieux et incassable. »</p>
+      <div class="meta"><strong>Chloé N.</strong> <span>— il y a 16 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>“The size is perfect for car journeys, silent and unbreakable.”</p>
+      <div class="meta"><strong>Rachel U.</strong> <span>— 21 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Ma fille de 18 mois adore déchirer et recoller les pages, elle ne s'en lasse pas. La matière est vraiment agréable au toucher. »</p>
+      <div class="meta"><strong>Sarah B.</strong> <span>— il y a 26 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Mon fils l'emmène partout, même à la crèche. Résiste bien au lavage en machine. »</p>
+      <div class="meta"><strong>Julie I.</strong> <span>— il y a 31 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“My 18-month-old daughter loves tearing off and reattaching the pages, she never gets tired of it. The material is really pleasant to the touch.”</p>
+      <div class="meta"><strong>Katie P.</strong> <span>— 36 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Livre magnifique, les finitions sont soignées. Je recommande sans hésiter. »</p>
+      <div class="meta"><strong>Emma W.</strong> <span>— il y a 1 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Idéal pour les petites mains, ma fille apprend les couleurs en s'amusant. »</p>
+      <div class="meta"><strong>Lucie D.</strong> <span>— il y a 6 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Le format est parfait pour les trajets en voiture, silencieux et incassable. »</p>
+      <div class="meta"><strong>Marie K.</strong> <span>— il y a 11 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Ma fille de 18 mois adore déchirer et recoller les pages, elle ne s'en lasse pas. La matière est vraiment agréable au toucher. »</p>
+      <div class="meta"><strong>Alice R.</strong> <span>— il y a 16 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Mon fils l'emmène partout, même à la crèche. Résiste bien au lavage en machine. »</p>
+      <div class="meta"><strong>Camille A.</strong> <span>— il y a 1 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Livre magnifique, les finitions sont soignées. Je recommande sans hésiter. »</p>
+      <div class="meta"><strong>Léa H.</strong> <span>— il y a 6 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“My son takes it everywhere, even to nursery. Holds up well in the washing machine.”</p>
+      <div class="meta"><strong>Emma O.</strong> <span>— 11 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Idéal pour les petites mains, ma fille apprend les couleurs en s'amusant. »</p>
+      <div class="meta"><strong>Manon V.</strong> <span>— il y a 16 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Le format est parfait pour les trajets en voiture, silencieux et incassable. »</p>
+      <div class="meta"><strong>Chloé C.</strong> <span>— il y a 21 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“Beautiful book, the finishing is very neat. I recommend it without hesitation.”</p>
+      <div class="meta"><strong>Olivia J.</strong> <span>— 26 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Le concept de pages à déchirer est génial, ça occupe vraiment longtemps mon petit. »</p>
+      <div class="meta"><strong>Aminata Q.</strong> <span>— il y a 31 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Ma fille de 18 mois adore déchirer et recoller les pages, elle ne s'en lasse pas. La matière est vraiment agréable au toucher. »</p>
+      <div class="meta"><strong>Sarah X.</strong> <span>— il y a 36 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Mon fils l'emmène partout, même à la crèche. Résiste bien au lavage en machine. »</p>
+      <div class="meta"><strong>Julie E.</strong> <span>— il y a 1 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“Ideal for little hands, my daughter is learning her colours while having fun.”</p>
+      <div class="meta"><strong>Sophia L.</strong> <span>— 6 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Livre magnifique, les finitions sont soignées. Je recommande sans hésiter. »</p>
+      <div class="meta"><strong>Emma S.</strong> <span>— il y a 11 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Idéal pour les petites mains, ma fille apprend les couleurs en s'amusant. »</p>
+      <div class="meta"><strong>Lucie Z.</strong> <span>— il y a 16 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>“The size is perfect for car journeys, silent and unbreakable.”</p>
+      <div class="meta"><strong>Isabella G.</strong> <span>— 21 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Le format est parfait pour les trajets en voiture, silencieux et incassable. »</p>
+      <div class="meta"><strong>Marie N.</strong> <span>— il y a 26 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Ma fille de 18 mois adore déchirer et recoller les pages, elle ne s'en lasse pas. La matière est vraiment agréable au toucher. »</p>
+      <div class="meta"><strong>Alice U.</strong> <span>— il y a 31 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>“My 18-month-old daughter loves tearing off and reattaching the pages, she never gets tired of it. The material is really pleasant to the touch.”</p>
+      <div class="meta"><strong>Mia B.</strong> <span>— 36 weeks ago</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>« Mon fils l'emmène partout, même à la crèche. Résiste bien au lavage en machine. »</p>
+      <div class="meta"><strong>Pauline I.</strong> <span>— il y a 1 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Livre magnifique, les finitions sont soignées. Je recommande sans hésiter. »</p>
+      <div class="meta"><strong>Charlotte P.</strong> <span>— il y a 6 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Idéal pour les petites mains, ma fille apprend les couleurs en s'amusant. »</p>
+      <div class="meta"><strong>Laura W.</strong> <span>— il y a 11 semaines</span></div>
+    </div>
+<div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>« Le format est parfait pour les trajets en voiture, silencieux et incassable. »</p>
+      <div class="meta"><strong>Anaïs D.</strong> <span>— il y a 16 semaines</span></div>
+    </div>
+
+    </div>
+  </div>
+</section>
+<div class="trust-bar">
+  <div class="trust-grid">
+    <div class="trust-item"><svg class="icon " width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 1 2.7 6"/><path d="M4 17v-4h4"/></svg><h4 data-i18n="trust1_h">Satisfait ou remboursé</h4><p data-i18n="trust1_p">Pendant 14 jours</p></div>
+    <div class="trust-item"><svg class="icon " width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7" width="11" height="9" rx="1"/><path d="M13.5 10h3.5l3 3v3h-6.5v-6Z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg><h4 data-i18n="trust2_h">Livraison suivie offerte</h4><p data-i18n="trust2_p">À partir de 80€ d'achat</p></div>
+    <div class="trust-item"><svg class="icon " width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12.5" rx="1.6"/><path d="M3 10.5h18"/><path d="M6.5 14.5h4"/></svg><h4 data-i18n="trust3_h">Paiement sécurisé</h4><p data-i18n="trust3_p">Par carte bancaire ou PayPal</p></div>
+    <div class="trust-item"><svg class="icon " width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7A2.5 2.5 0 0 1 17.5 16H10l-4.5 4v-4h-.02A2.5 2.5 0 0 1 4 13.5v-7Z"/></svg><h4 data-i18n="trust4_h">Réponse sous 24h</h4><p data-i18n="trust4_p">Notre équipe à votre écoute</p></div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-col brand">
+      <span>Mon Premier Livre</span>
+      <p data-i18n="footer_about">La boutique en ligne spécialiste du livre en feutrine pour les tout-petits. Des histoires douces à déchirer, encore et encore.</p>
+      <p style="margin-top:14px"><strong data-i18n="footer_contact">Contact</strong> : <a href="mailto:monpremierlivre.com@gmail.com">monpremierlivre.com@gmail.com</a></p>
+      <p data-i18n="footer_hours">Du lundi au vendredi, 9h - 18h</p>
+      <p style="margin-top:6px" data-i18n="footer_team_location">Équipe basée en France</p>
+    </div>
+    <div class="footer-col">
+      <h5 data-i18n="footer_info">Informations</h5>
+      <ul class="footer-links">
+        <li><a href="#" data-i18n="f_cgv">CGV</a></li>
+        <li><a href="#" data-i18n="f_cgu">CGU</a></li>
+        <li><a href="#" data-i18n="f_legal">Mentions légales</a></li>
+        <li><a href="#" data-i18n="f_privacy">Politique de confidentialité</a></li>
+        <li><a href="#" data-i18n="f_payment">Paiement sécurisé</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5 data-i18n="footer_help">Besoin d'aide ?</h5>
+      <ul class="footer-links">
+        <li><a href="faq.html" data-i18n="f_faq">FAQ</a></li>
+        <li><a href="faq.html#Livraison" data-i18n="f_shipping">Livraison &amp; suivi</a></li>
+        <li><a href="compte.html" data-i18n="f_track">Suivre ma commande</a></li>
+        <li><a href="faq.html#Compte-retours" data-i18n="f_returns">Retours et remboursement</a></li>
+        <li><a href="mailto:monpremierlivre.com@gmail.com" data-i18n="f_contact_form">Formulaire de contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Mon Premier Livre — <span data-i18n="rights">Tous droits réservés.</span></div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/app.js"></script>
+<script src="js/shop.js"></script>
+<script src="js/checkout.js"></script>
+</body>
+</html>
