@@ -55,7 +55,11 @@
   }
   .pill.on{background:#e8f0e6; color:var(--green)}
   .pill.off{background:#f3e6e3; color:var(--red)}
+  .pill.wait{background:#f3ead9; color:var(--accent-dark)}
   .pill.promo{background:#f6e3d8; color:var(--accent-dark)}
+  .tabs{display:flex; gap:8px; margin-bottom:20px}
+  .tab-btn{background:transparent; border:1px solid var(--border); color:var(--ink); padding:8px 16px}
+  .tab-btn.active{background:var(--accent); color:#fff; border-color:var(--accent)}
   .actions{display:flex; gap:6px; flex-wrap:wrap}
   .thumb{width:40px; height:40px; object-fit:cover; border-radius:6px; background:var(--cream-2)}
   #logout{float:right; font-size:13px; background:none; border:none; color:#8a8175; text-decoration:underline; padding:0}
@@ -95,12 +99,18 @@
 <div id="app" class="wrap">
   <div class="top-row">
     <div>
-      <h1>Gestion des produits</h1>
-      <p class="sub">Ajoute, modifie ou dépublie un livre — les changements apparaissent sur le site en quelques secondes.</p>
+      <h1>Administration</h1>
+      <p class="sub">Gère les livres et consulte les commandes — les changements apparaissent sur le site en quelques secondes.</p>
     </div>
     <button id="logout" onclick="doLogout()">Se déconnecter</button>
   </div>
 
+  <div class="tabs">
+    <button class="tab-btn active" id="tab-btn-products" onclick="showTab('products')">Produits</button>
+    <button class="tab-btn" id="tab-btn-orders" onclick="showTab('orders')">Commandes</button>
+  </div>
+
+  <div id="panel-products">
   <div class="card">
     <h2 id="form-title" style="margin-top:0">Ajouter un nouveau livre</h2>
     <form id="product-form" onsubmit="return false">
@@ -202,6 +212,20 @@
       <tbody id="product-list"><tr><td colspan="5">Chargement…</td></tr></tbody>
     </table>
   </div>
+  </div>
+
+  <div id="panel-orders" style="display:none">
+    <div class="card">
+      <h2 style="margin-top:0">Commandes</h2>
+      <p class="sub" style="margin-bottom:16px">Liste des commandes payées, les plus récentes en premier. Lecture seule.</p>
+      <table>
+        <thead>
+          <tr><th>Date</th><th>Client</th><th>Articles</th><th>Montant</th><th>Statut</th></tr>
+        </thead>
+        <tbody id="order-list"><tr><td colspan="5">Chargement…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -221,10 +245,44 @@ async function checkSession(){
     document.getElementById("login-box").style.display = "none";
     document.getElementById("app").style.display = "block";
     loadProducts();
+    loadOrders();
   } else {
     document.getElementById("login-box").style.display = "block";
     document.getElementById("app").style.display = "none";
   }
+}
+
+function showTab(name){
+  document.getElementById("panel-products").style.display = name === "products" ? "block" : "none";
+  document.getElementById("panel-orders").style.display = name === "orders" ? "block" : "none";
+  document.getElementById("tab-btn-products").classList.toggle("active", name === "products");
+  document.getElementById("tab-btn-orders").classList.toggle("active", name === "orders");
+}
+
+const STATUS_LABELS = { paid: "Payée", pending: "En attente", failed: "Échouée" };
+const STATUS_PILL = { paid: "on", pending: "wait", failed: "off" };
+
+async function loadOrders(){
+  const tbody = document.getElementById("order-list");
+  const { data, error } = await sb.from("orders").select("*").order("created_at", { ascending: false });
+  if(error){ tbody.innerHTML = "<tr><td colspan='5'>Erreur de chargement</td></tr>"; return; }
+  if(!data.length){ tbody.innerHTML = "<tr><td colspan='5'>Aucune commande pour le moment.</td></tr>"; return; }
+  tbody.innerHTML = data.map(o => {
+    const date = o.created_at ? new Date(o.created_at).toLocaleDateString("fr-FR", { day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit" }) : "—";
+    const items = (o.items || []).map(it => `${it.quantity}× ${it.name}`).join("<br>") || "—";
+    const amount = o.amount_total != null ? `${Number(o.amount_total).toFixed(2)} ${(o.currency||"eur").toUpperCase()}` : "—";
+    const statusKey = o.status || "pending";
+    const statusLabel = STATUS_LABELS[statusKey] || statusKey;
+    const pillClass = STATUS_PILL[statusKey] || "wait";
+    return `
+    <tr>
+      <td>${date}</td>
+      <td>${o.customer_email || "—"}</td>
+      <td>${items}</td>
+      <td>${amount}</td>
+      <td><span class="pill ${pillClass}">${statusLabel}</span></td>
+    </tr>`;
+  }).join("");
 }
 
 async function doLogin(){

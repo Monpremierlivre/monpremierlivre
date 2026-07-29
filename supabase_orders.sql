@@ -15,7 +15,14 @@ create table if not exists orders (
 );
 
 -- Sécurité : cette table ne doit JAMAIS être lisible publiquement (adresses e-mail, montants...).
--- Elle n'est accessible que via la clé service_role, utilisée uniquement côté serveur
--- (dans les fonctions Netlify), jamais dans le navigateur. On active RLS sans ajouter
--- aucune policy publique : personne d'autre que service_role ne peut y accéder.
+-- Elle n'est accessible que via la clé service_role (fonctions Netlify) pour l'écriture,
+-- et par les comptes admin connectés (Supabase Auth, via admin.html) pour la lecture seule.
 alter table orders enable row level security;
+
+-- Permet aux comptes admin connectés (toi + associé·e) de VOIR les commandes dans admin.html.
+-- Personne d'autre (visiteur non connecté) ne peut lire cette table.
+drop policy if exists "orders_select_authenticated" on orders;
+create policy "orders_select_authenticated" on orders
+  for select
+  to authenticated
+  using (true);
