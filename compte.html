@@ -50,29 +50,44 @@
 </section>
 <section style="padding-top:10px">
   <div class="container">
-    <div class="auth-wrap">
+
+    <div id="account-view" style="display:none">
+      <div class="auth-wrap">
+        <p style="font-size:15px;margin-bottom:14px">
+          <span data-i18n="account_connected_as">Connecté·e en tant que</span> <strong id="account-email"></strong>
+        </p>
+        <button class="btn btn-ghost btn-small" onclick="doLogout()" data-i18n="account_logout">Se déconnecter</button>
+        <h3 style="margin-top:32px" data-i18n="account_orders_title">Mes commandes</h3>
+        <div id="my-orders" style="margin-top:12px">
+          <p data-i18n="account_orders_loading">Chargement…</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-wrap" id="auth-forms">
       <div class="auth-tabs">
         <button class="active" data-tab="login" data-i18n="tab_login">Connexion</button>
         <button data-tab="signup" data-i18n="tab_signup">Créer un compte</button>
       </div>
       <div class="auth-panel" data-panel="login">
-        <div class="field"><label data-i18n="field_email">E-mail</label><input type="email" placeholder="vous@exemple.fr"></div>
-        <div class="field"><label data-i18n="field_password">Mot de passe</label><input type="password" placeholder="••••••••"></div>
-        <button class="btn btn-primary btn-block" data-i18n="login_btn">Se connecter</button>
+        <div class="field"><label data-i18n="field_email">E-mail</label><input type="email" id="login-email" placeholder="vous@exemple.fr" autocomplete="username"></div>
+        <div class="field"><label data-i18n="field_password">Mot de passe</label><input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password"></div>
+        <button class="btn btn-primary btn-block" data-i18n="login_btn" onclick="doLogin()">Se connecter</button>
+        <p id="login-msg" style="font-size:13px;margin-top:10px"></p>
       </div>
       <div class="auth-panel" data-panel="signup" style="display:none">
         <div class="discount-note" data-i18n="signup_discount_note">-10% sur votre première commande dès la création de votre compte.</div>
-        <div class="field"><label data-i18n="field_firstname">Prénom</label><input type="text" placeholder="Votre prénom"></div>
-        <div class="field"><label data-i18n="field_email">E-mail</label><input type="email" placeholder="vous@exemple.fr"></div>
-        <div class="field"><label data-i18n="field_password">Mot de passe</label><input type="password" placeholder="8 caractères minimum"></div>
+        <div class="field"><label data-i18n="field_firstname">Prénom</label><input type="text" id="signup-firstname" placeholder="Votre prénom"></div>
+        <div class="field"><label data-i18n="field_email">E-mail</label><input type="email" id="signup-email" placeholder="vous@exemple.fr" autocomplete="username"></div>
+        <div class="field"><label data-i18n="field_password">Mot de passe</label><input type="password" id="signup-password" placeholder="8 caractères minimum" autocomplete="new-password"></div>
         <div class="checkbox-row">
           <input type="checkbox" id="newsletter-opt" checked>
           <label for="newsletter-opt" data-i18n="newsletter_opt">J'accepte de recevoir les actualités de Mon Premier Livre (nouveautés, articles de blog, offres).</label>
         </div>
-        <button class="btn btn-primary btn-block" data-i18n="signup_btn">Créer mon compte</button>
+        <button class="btn btn-primary btn-block" data-i18n="signup_btn" onclick="doSignup()">Créer mon compte</button>
+        <p id="signup-msg" style="font-size:13px;margin-top:10px"></p>
       </div>
     </div>
-    <p style="text-align:center;color:var(--muted);font-size:13px;margin-top:20px" data-i18n="demo_disclaimer">Ceci est une interface de démonstration. La création réelle de compte nécessite une base de données et un service d'authentification à connecter (voir README).</p>
   </div>
 </section>
 <div class="trust-bar">
@@ -120,5 +135,111 @@
 <script src="js/app.js"></script>
 <script src="js/shop.js"></script>
 <script src="js/checkout.js"></script>
+<script>
+(function(){
+  var SUPABASE_URL = "https://exhlwztwbukaevlmkhta.supabase.co";
+  var SUPABASE_ANON_KEY = "sb_publishable_Tk2upQykwis-EE_zgWfHjQ_Lrymxsn5";
+  var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  function dict(){ return (window.MPL ? (window.MPL.getLang() === "en") : false); }
+  function t(fr, en){ return dict() ? en : fr; }
+
+  function setMsg(id, text, ok){
+    var el = document.getElementById(id);
+    if(!el) return;
+    el.textContent = text;
+    el.style.color = ok ? "#5f7a5f" : "#b3564a";
+  }
+
+  function showAccountView(email){
+    document.getElementById("auth-forms").style.display = "none";
+    document.getElementById("account-view").style.display = "block";
+    var em = document.getElementById("account-email");
+    if(em) em.textContent = email || "";
+  }
+
+  async function loadMyOrders(email){
+    var box = document.getElementById("my-orders");
+    var res = await sb.from("orders").select("*").eq("customer_email", email).order("created_at", { ascending: false });
+    if(res.error){
+      box.innerHTML = "<p>" + t("Impossible de charger vos commandes.", "Unable to load your orders.") + "</p>";
+      return;
+    }
+    var data = res.data || [];
+    if(!data.length){
+      box.innerHTML = "<p>" + t("Vous n'avez pas encore passé de commande.", "You haven't placed an order yet.") + "</p>";
+      return;
+    }
+    var statusLabels = {
+      paid: t("Payée", "Paid"),
+      pending: t("En attente", "Pending"),
+      failed: t("Échouée", "Failed")
+    };
+    box.innerHTML = data.map(function(o){
+      var date = o.created_at ? new Date(o.created_at).toLocaleDateString(dict() ? "en-GB" : "fr-FR") : "";
+      var items = (o.items || []).map(function(it){ return it.quantity + "× " + it.name; }).join(", ");
+      var amount = o.amount_total != null ? Number(o.amount_total).toFixed(2) + " " + (o.currency || "eur").toUpperCase() : "";
+      var statusLabel = statusLabels[o.status] || o.status;
+      return '<div class="cart-line">'
+        + '<div class="grow"><strong>' + date + '</strong><div style="font-size:13px;color:var(--muted)">' + items + '</div></div>'
+        + '<div class="price">' + amount + '</div>'
+        + '<div style="font-size:13px">' + statusLabel + '</div>'
+        + '</div>';
+    }).join("");
+  }
+
+  window.doLogin = async function(){
+    var email = document.getElementById("login-email").value.trim();
+    var password = document.getElementById("login-password").value;
+    if(!email || !password){ setMsg("login-msg", t("Merci de remplir tous les champs.", "Please fill in all fields."), false); return; }
+    setMsg("login-msg", t("Connexion…", "Logging in…"), true);
+    var res = await sb.auth.signInWithPassword({ email: email, password: password });
+    if(res.error){ setMsg("login-msg", t("Erreur : ", "Error: ") + res.error.message, false); return; }
+    setMsg("login-msg", "", true);
+    showAccountView(email);
+    loadMyOrders(email);
+  };
+
+  window.doSignup = async function(){
+    var firstname = document.getElementById("signup-firstname").value.trim();
+    var email = document.getElementById("signup-email").value.trim();
+    var password = document.getElementById("signup-password").value;
+    var newsletter = document.getElementById("newsletter-opt").checked;
+    if(!email || !password){ setMsg("signup-msg", t("Merci de remplir tous les champs.", "Please fill in all fields."), false); return; }
+    if(password.length < 8){ setMsg("signup-msg", t("Le mot de passe doit contenir au moins 8 caractères.", "Password must be at least 8 characters."), false); return; }
+    setMsg("signup-msg", t("Création du compte…", "Creating account…"), true);
+    var res = await sb.auth.signUp({
+      email: email,
+      password: password,
+      options: { data: { first_name: firstname, newsletter_opt: newsletter } }
+    });
+    if(res.error){ setMsg("signup-msg", t("Erreur : ", "Error: ") + res.error.message, false); return; }
+    if(res.data.session){
+      setMsg("signup-msg", "", true);
+      showAccountView(email);
+      loadMyOrders(email);
+    } else {
+      setMsg("signup-msg", t(
+        "Compte créé ! Vérifiez votre boîte mail pour confirmer votre adresse avant de vous connecter.",
+        "Account created! Check your inbox to confirm your email before logging in."
+      ), true);
+    }
+  };
+
+  window.doLogout = async function(){
+    await sb.auth.signOut();
+    location.reload();
+  };
+
+  document.addEventListener("DOMContentLoaded", async function(){
+    var res = await sb.auth.getSession();
+    if(res.data && res.data.session){
+      var email = res.data.session.user.email;
+      showAccountView(email);
+      loadMyOrders(email);
+    }
+  });
+})();
+</script>
 </body>
 </html>
