@@ -217,12 +217,12 @@
   <div id="panel-orders" style="display:none">
     <div class="card">
       <h2 style="margin-top:0">Commandes</h2>
-      <p class="sub" style="margin-bottom:16px">Liste des commandes payées, les plus récentes en premier. Lecture seule.</p>
+      <p class="sub" style="margin-bottom:16px">Liste des commandes, les plus récentes en premier. Clique sur "Gérer" pour changer le statut ou ajouter un numéro de suivi.</p>
       <table>
         <thead>
-          <tr><th>Date</th><th>Client</th><th>Articles</th><th>Montant</th><th>Statut</th></tr>
+          <tr><th>Date</th><th>Client</th><th>Articles</th><th>Montant</th><th>Statut</th><th></th></tr>
         </thead>
-        <tbody id="order-list"><tr><td colspan="5">Chargement…</td></tr></tbody>
+        <tbody id="order-list"><tr><td colspan="6">Chargement…</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -259,14 +259,17 @@ function showTab(name){
   document.getElementById("tab-btn-orders").classList.toggle("active", name === "orders");
 }
 
-const STATUS_LABELS = { paid: "Payée", pending: "En attente", failed: "Échouée" };
-const STATUS_PILL = { paid: "on", pending: "wait", failed: "off" };
+const STATUS_LABELS = { paid: "Payée", pending: "En attente", shipped: "Expédiée", failed: "Échouée" };
+const STATUS_PILL = { paid: "on", pending: "wait", shipped: "on", failed: "off" };
+
+let ORDERS_CACHE = [];
 
 async function loadOrders(){
   const tbody = document.getElementById("order-list");
   const { data, error } = await sb.from("orders").select("*").order("created_at", { ascending: false });
-  if(error){ tbody.innerHTML = "<tr><td colspan='5'>Erreur de chargement</td></tr>"; return; }
-  if(!data.length){ tbody.innerHTML = "<tr><td colspan='5'>Aucune commande pour le moment.</td></tr>"; return; }
+  if(error){ tbody.innerHTML = "<tr><td colspan='6'>Erreur de chargement</td></tr>"; return; }
+  ORDERS_CACHE = data || [];
+  if(!data.length){ tbody.innerHTML = "<tr><td colspan='6'>Aucune commande pour le moment.</td></tr>"; return; }
   tbody.innerHTML = data.map(o => {
     const date = o.created_at ? new Date(o.created_at).toLocaleDateString("fr-FR", { day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit" }) : "—";
     const items = (o.items || []).map(it => `${it.quantity}× ${it.name}`).join("<br>") || "—";
@@ -281,8 +284,65 @@ async function loadOrders(){
       <td>${items}</td>
       <td>${amount}</td>
       <td><span class="pill ${pillClass}">${statusLabel}</span></td>
+      <td><button class="btn-ghost btn-sm" onclick="toggleOrderEdit('${o.id}')">Gérer</button></td>
+    </tr>
+    <tr id="order-edit-${o.id}" style="display:none">
+      <td colspan="6">
+        <div style="background:var(--cream-2); border-radius:10px; padding:14px 16px">
+          <div class="row3">
+            <div>
+              <label>Statut</label>
+              <select id="order-status-${o.id}">
+                <option value="pending" ${statusKey==="pending"?"selected":""}>En attente</option>
+                <option value="paid" ${statusKey==="paid"?"selected":""}>Payée</option>
+                <option value="shipped" ${statusKey==="shipped"?"selected":""}>Expédiée</option>
+                <option value="failed" ${statusKey==="failed"?"selected":""}>Échouée</option>
+              </select>
+            </div>
+            <div>
+              <label>N° de suivi</label>
+              <input type="text" id="order-tracknum-${o.id}" value="${o.tracking_number || ""}" placeholder="ex : 6A12345678901">
+            </div>
+            <div>
+              <label>Lien de suivi</label>
+              <input type="text" id="order-trackurl-${o.id}" value="${o.tracking_url || ""}" placeholder="https://...">
+            </div>
+          </div>
+          <div style="margin-top:14px; display:flex; gap:10px; align-items:center">
+            <button class="btn-primary btn-sm" onclick="saveOrderTracking('${o.id}')">Enregistrer</button>
+            <span id="order-msg-${o.id}" class="msg"></span>
+          </div>
+        </div>
+      </td>
     </tr>`;
   }).join("");
+}
+
+function toggleOrderEdit(id){
+  const row = document.getElementById(`order-edit-${id}`);
+  if(!row) return;
+  row.style.display = row.style.display === "none" ? "table-row" : "none";
+}
+
+async function saveOrderTracking(id){
+  const msg = document.getElementById(`order-msg-${id}`);
+  msg.textContent = "Enregistrement…"; msg.className = "msg";
+  const status = document.getElementById(`order-status-${id}`).value;
+  const tracking_number = document.getElementById(`order-tracknum-${id}`).value.trim();
+  const tracking_url = document.getElementById(`order-trackurl-${id}`).value.trim();
+  const { error } = await sb.from("orders").update({
+    status,
+    tracking_number: tracking_number || null,
+    tracking_url: tracking_url || null,
+  }).eq("id", id);
+  if(error){
+    msg.textContent = "Erreur : " + error.message;
+    msg.className = "msg err";
+    return;
+  }
+  msg.textContent = "Enregistré !";
+  msg.className = "msg ok";
+  setTimeout(loadOrders, 700);
 }
 
 async function doLogin(){

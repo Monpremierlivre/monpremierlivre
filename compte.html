@@ -52,14 +52,42 @@
   <div class="container">
 
     <div id="account-view" style="display:none">
-      <div class="auth-wrap">
-        <p style="font-size:15px;margin-bottom:14px">
-          <span data-i18n="account_connected_as">Connecté·e en tant que</span> <strong id="account-email"></strong>
-        </p>
-        <button class="btn btn-ghost btn-small" onclick="doLogout()" data-i18n="account_logout">Se déconnecter</button>
-        <h3 style="margin-top:32px" data-i18n="account_orders_title">Mes commandes</h3>
-        <div id="my-orders" style="margin-top:12px">
-          <p data-i18n="account_orders_loading">Chargement…</p>
+      <div class="account-dash">
+        <div class="account-sidebar">
+          <button class="active" data-account-tab="orders" onclick="showAccountTab('orders')" data-i18n="account_nav_orders">Mes commandes</button>
+          <button data-account-tab="wishlist" onclick="showAccountTab('wishlist')" data-i18n="account_nav_wishlist">Ma liste de souhaits</button>
+          <button data-account-tab="password" onclick="showAccountTab('password')" data-i18n="account_nav_password">Modifier mon mot de passe</button>
+          <hr>
+          <button onclick="doLogout()" data-i18n="account_logout">Se déconnecter</button>
+        </div>
+        <div class="account-content">
+          <p style="font-size:13.5px;color:var(--muted);margin-bottom:22px">
+            <span data-i18n="account_connected_as">Connecté·e en tant que</span> <strong id="account-email"></strong>
+          </p>
+
+          <div class="account-panel active" data-account-panel="orders">
+            <h3 data-i18n="account_orders_title">Mes commandes</h3>
+            <div id="my-orders" style="margin-top:12px">
+              <p data-i18n="account_orders_loading">Chargement…</p>
+            </div>
+          </div>
+
+          <div class="account-panel" data-account-panel="wishlist">
+            <h3 data-i18n="account_nav_wishlist">Ma liste de souhaits</h3>
+            <div id="my-wishlist" style="margin-top:16px">
+              <p data-i18n="account_wishlist_loading">Chargement…</p>
+            </div>
+          </div>
+
+          <div class="account-panel" data-account-panel="password">
+            <h3 data-i18n="account_nav_password">Modifier mon mot de passe</h3>
+            <div style="max-width:340px;margin-top:16px">
+              <div class="field"><label data-i18n="account_new_password">Nouveau mot de passe</label><input type="password" id="new-password" placeholder="8 caractères minimum" autocomplete="new-password"></div>
+              <div class="field"><label data-i18n="account_confirm_password">Confirmer le mot de passe</label><input type="password" id="confirm-password" placeholder="••••••••" autocomplete="new-password"></div>
+              <button class="btn btn-primary btn-block" onclick="doChangePassword()" data-i18n="account_save_password">Enregistrer</button>
+              <p id="password-msg" style="font-size:13px;margin-top:10px"></p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -158,6 +186,24 @@
     if(em) em.textContent = email || "";
   }
 
+  window.showAccountTab = function(name){
+    document.querySelectorAll("[data-account-tab]").forEach(function(btn){
+      btn.classList.toggle("active", btn.getAttribute("data-account-tab") === name);
+    });
+    document.querySelectorAll("[data-account-panel]").forEach(function(panel){
+      panel.classList.toggle("active", panel.getAttribute("data-account-panel") === name);
+    });
+    if(name === "wishlist") loadMyWishlist();
+  };
+
+  function escHtml(s){
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+      return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c];
+    });
+  }
+
+  var ORDERS_CACHE = [];
+
   async function loadMyOrders(email){
     var box = document.getElementById("my-orders");
     var res = await sb.from("orders").select("*").eq("customer_email", email).order("created_at", { ascending: false });
@@ -166,6 +212,7 @@
       return;
     }
     var data = res.data || [];
+    ORDERS_CACHE = data;
     if(!data.length){
       box.innerHTML = "<p>" + t("Vous n'avez pas encore passé de commande.", "You haven't placed an order yet.") + "</p>";
       return;
@@ -173,20 +220,91 @@
     var statusLabels = {
       paid: t("Payée", "Paid"),
       pending: t("En attente", "Pending"),
+      shipped: t("Expédiée", "Shipped"),
       failed: t("Échouée", "Failed")
     };
-    box.innerHTML = data.map(function(o){
+    box.innerHTML = data.map(function(o, i){
       var date = o.created_at ? new Date(o.created_at).toLocaleDateString(dict() ? "en-GB" : "fr-FR") : "";
       var items = (o.items || []).map(function(it){ return it.quantity + "× " + it.name; }).join(", ");
       var amount = o.amount_total != null ? Number(o.amount_total).toFixed(2) + " " + (o.currency || "eur").toUpperCase() : "";
-      var statusLabel = statusLabels[o.status] || o.status;
-      return '<div class="cart-line">'
+      var statusKey = o.status || "pending";
+      var statusLabel = statusLabels[statusKey] || statusKey;
+
+      var detailInner = '<div class="tracking-box">';
+      if(o.tracking_number){
+        detailInner += '<p style="margin:0 0 6px"><strong>' + t("Numéro de suivi", "Tracking number") + ' : </strong>' + escHtml(o.tracking_number) + '</p>';
+        if(o.tracking_url){
+          detailInner += '<a href="' + escHtml(o.tracking_url) + '" target="_blank" rel="noopener" class="btn btn-outline btn-small">' + t("Suivre mon colis", "Track my package") + '</a>';
+        }
+      } else {
+        detailInner += '<p style="margin:0;color:var(--muted)">' + t("Le numéro de suivi apparaîtra ici dès l'expédition de votre commande.", "Your tracking number will appear here once your order ships.") + '</p>';
+      }
+      detailInner += '</div>';
+
+      return '<div class="order-row" onclick="toggleOrderDetail(' + i + ')">'
         + '<div class="grow"><strong>' + date + '</strong><div style="font-size:13px;color:var(--muted)">' + items + '</div></div>'
         + '<div class="price">' + amount + '</div>'
-        + '<div style="font-size:13px">' + statusLabel + '</div>'
-        + '</div>';
+        + '<span class="status-pill ' + statusKey + '">' + statusLabel + '</span>'
+        + '</div>'
+        + '<div class="order-detail" id="order-detail-' + i + '">' + detailInner + '</div>';
     }).join("");
   }
+
+  window.toggleOrderDetail = function(i){
+    var el = document.getElementById("order-detail-" + i);
+    if(!el) return;
+    el.classList.toggle("active");
+  };
+
+  async function loadMyWishlist(){
+    var box = document.getElementById("my-wishlist");
+    var w = [];
+    try { w = JSON.parse(localStorage.getItem("mpl_wishlist") || "[]"); } catch(e){ w = []; }
+    if(!w.length){
+      box.innerHTML = "<p style='color:var(--muted)'>" + t("Votre liste de souhaits est vide.", "Your wishlist is empty.") + "</p>";
+      return;
+    }
+    box.innerHTML = "<p>" + t("Chargement…", "Loading…") + "</p>";
+    var slugs = w.map(function(it){ return it.slug; });
+    var res = await sb.from("products").select("slug,name,name_en,price,discount_active,discount_price,image_url").in("slug", slugs);
+    var live = {};
+    (res.data || []).forEach(function(p){ live[p.slug] = p; });
+    box.innerHTML = '<div class="wishlist-grid">' + w.map(function(it){
+      var p = live[it.slug];
+      var name = p ? (dict() ? (p.name_en || p.name) : p.name) : it.name;
+      var price = p ? (p.discount_active && p.discount_price ? p.discount_price : p.price) : it.price;
+      var img = p && p.image_url ? '<img src="' + escHtml(p.image_url) + '" alt="">' : "";
+      return '<div class="wishlist-card">'
+        + '<a href="produit.html?slug=' + encodeURIComponent(it.slug) + '"><div class="media">' + img + '</div></a>'
+        + '<div class="info">'
+        + '<h4><a href="produit.html?slug=' + encodeURIComponent(it.slug) + '" style="color:inherit">' + escHtml(name) + '</a></h4>'
+        + '<div class="price">' + Number(price || 0).toFixed(2) + ' €</div>'
+        + '<button class="remove-btn" onclick="removeFromWishlist(\'' + it.slug.replace(/'/g,"") + '\')">' + t("Retirer", "Remove") + '</button>'
+        + '</div></div>';
+    }).join("") + '</div>';
+  }
+
+  window.removeFromWishlist = function(slug){
+    var w = [];
+    try { w = JSON.parse(localStorage.getItem("mpl_wishlist") || "[]"); } catch(e){ w = []; }
+    w = w.filter(function(it){ return it.slug !== slug; });
+    localStorage.setItem("mpl_wishlist", JSON.stringify(w));
+    if(window.MPL && window.MPL.initWishlistButtons) { /* badges refreshed on next page load */ }
+    loadMyWishlist();
+  };
+
+  window.doChangePassword = async function(){
+    var pw = document.getElementById("new-password").value;
+    var pw2 = document.getElementById("confirm-password").value;
+    if(!pw || pw.length < 8){ setMsg("password-msg", t("Le mot de passe doit contenir au moins 8 caractères.", "Password must be at least 8 characters."), false); return; }
+    if(pw !== pw2){ setMsg("password-msg", t("Les mots de passe ne correspondent pas.", "Passwords do not match."), false); return; }
+    setMsg("password-msg", t("Enregistrement…", "Saving…"), true);
+    var res = await sb.auth.updateUser({ password: pw });
+    if(res.error){ setMsg("password-msg", t("Erreur : ", "Error: ") + res.error.message, false); return; }
+    document.getElementById("new-password").value = "";
+    document.getElementById("confirm-password").value = "";
+    setMsg("password-msg", t("Mot de passe mis à jour !", "Password updated!"), true);
+  };
 
   window.doLogin = async function(){
     var email = document.getElementById("login-email").value.trim();
