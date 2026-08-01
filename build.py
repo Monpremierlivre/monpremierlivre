@@ -570,7 +570,7 @@ if __name__ == "__main__":
     build_faq()
     build_blog_list()
     build_blog_articles()
-    build_compte()
+    # build_compte()  # compte.html est maintenant maintenu à la main (vraie auth Supabase, voir git history)
     build_panier()
     build_success()
     print("OK -", len(PRODUCTS), "produits,", len(ARTICLES), "articles,", len(REVIEWS), "avis")
