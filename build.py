@@ -103,11 +103,11 @@ def footer(depth=""):
     <div class="footer-col">
       <h5 data-i18n="footer_info">Informations</h5>
       <ul class="footer-links">
-        <li><a href="#" data-i18n="f_cgv">CGV</a></li>
-        <li><a href="#" data-i18n="f_cgu">CGU</a></li>
-        <li><a href="#" data-i18n="f_legal">Mentions légales</a></li>
-        <li><a href="#" data-i18n="f_privacy">Politique de confidentialité</a></li>
-        <li><a href="#" data-i18n="f_payment">Paiement sécurisé</a></li>
+        <li><a href="{depth}cgv.html" data-i18n="f_cgv">CGV</a></li>
+        <li><a href="{depth}cgu.html" data-i18n="f_cgu">CGU</a></li>
+        <li><a href="{depth}mentions-legales.html" data-i18n="f_legal">Mentions légales</a></li>
+        <li><a href="{depth}confidentialite.html" data-i18n="f_privacy">Politique de confidentialité</a></li>
+        <li><a href="{depth}paiement-securise.html" data-i18n="f_payment">Paiement sécurisé</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -563,6 +563,197 @@ def build_success():
     with open(os.path.join(ROOT, "success.html"), "w", encoding="utf-8") as f:
         f.write(html)
 
+def legal_page(slug, title, desc, body_html):
+    html = head(title, desc, "", "")
+    html += header("")
+    html += f"""
+<section class="page-hero">
+  <div class="container" style="max-width:760px">
+    <h1>{title}</h1>
+  </div>
+</section>
+<section style="padding-top:10px;padding-bottom:40px">
+  <div class="container">
+    <div class="article-body legal-body">
+{body_html}
+    </div>
+  </div>
+</section>
+"""
+    html += footer()
+    with open(os.path.join(ROOT, f"{slug}.html"), "w", encoding="utf-8") as f:
+        f.write(html)
+
+
+def build_legal_pages():
+    # Informations d'identification de l'éditeur (à tenir à jour) :
+    #   - Statut : entreprise individuelle, régime micro-entreprise
+    #   - Responsable de publication : Camille
+    #   - Ville de rattachement : Strasbourg (adresse complète volontairement non publiée)
+    #   - SIRET : en cours d'attribution (immatriculation micro-entreprise en cours) —
+    #     À AJOUTER ICI dès réception : remplacer la ligne SIRET ci-dessous dans mentions-legales.
+    #   - Contact : monpremierlivre.com@gmail.com uniquement (pas de téléphone publié)
+
+    legal_page("mentions-legales", "Mentions légales",
+        "Mentions légales du site Mon Premier Livre : éditeur, hébergement, propriété intellectuelle.",
+        """
+      <!-- TODO : ajouter la ligne "Numéro SIRET : ..." ci-dessous dès réception du numéro définitif. -->
+      <h2>Éditeur du site</h2>
+      <p>Le site monpremierlivre.com (ci-après « le Site ») est édité par Camille, entrepreneur individuel exerçant sous le régime de la micro-entreprise, domicilié à Strasbourg, France.</p>
+      <p>TVA non applicable, article 293 B du Code général des impôts.</p>
+      <p>Directeur de la publication : Camille.</p>
+      <p>Contact : <a href="mailto:monpremierlivre.com@gmail.com">monpremierlivre.com@gmail.com</a></p>
+
+      <h2>Hébergement</h2>
+      <p>Le Site est hébergé par Netlify, Inc., 101 2nd Street, San Francisco, CA 94105, États-Unis — <a href="https://www.netlify.com" target="_blank" rel="noopener">www.netlify.com</a>.</p>
+
+      <h2>Propriété intellectuelle</h2>
+      <p>L'ensemble des éléments du Site (textes, illustrations, photographies, logo, mise en page, charte graphique) est protégé par le droit d'auteur et reste la propriété exclusive de l'éditeur, sauf mention contraire. Toute reproduction, représentation ou exploitation, totale ou partielle, sans autorisation préalable écrite, est interdite et pourrait constituer une contrefaçon au sens des articles L.335-2 et suivants du Code de la propriété intellectuelle.</p>
+
+      <h2>Données personnelles</h2>
+      <p>Le traitement des données personnelles collectées via le Site est décrit en détail dans notre <a href="confidentialite.html">Politique de confidentialité</a>.</p>
+
+      <h2>Droit applicable</h2>
+      <p>Les présentes mentions légales sont soumises au droit français. En cas de litige, les juridictions françaises seront seules compétentes, sous réserve des règles impératives applicables aux consommateurs.</p>
+""")
+
+    legal_page("cgv", "Conditions générales de vente",
+        "Conditions générales de vente du site Mon Premier Livre : commande, paiement, livraison, retours et garanties.",
+        """
+      <p>Les présentes conditions générales de vente (CGV) régissent les ventes de produits réalisées sur le site monpremierlivre.com, édité par Camille, entrepreneur individuel (micro-entreprise), Strasbourg, France. Toute commande passée sur le Site implique l'acceptation pleine et entière des présentes CGV.</p>
+
+      <h2>1. Produits</h2>
+      <p>Le Site propose à la vente des livres en feutrine à déchirer, conçus pour les enfants de 0 à 3 ans. Les caractéristiques essentielles de chaque produit (dimensions, matière, âge conseillé) sont présentées sur sa fiche descriptive.</p>
+
+      <h2>2. Prix</h2>
+      <p>Les prix sont indiqués en euros. La micro-entreprise bénéficiant de la franchise en base de TVA (article 293 B du CGI), les prix affichés ne comportent pas de TVA. Les frais de livraison sont précisés avant la validation définitive de la commande.</p>
+
+      <h2>3. Commande</h2>
+      <p>Le client sélectionne les produits de son choix, les ajoute à son panier, puis valide sa commande en renseignant ses coordonnées et en procédant au paiement. Un e-mail de confirmation récapitulant la commande est envoyé automatiquement après validation du paiement.</p>
+
+      <h2>4. Paiement</h2>
+      <p>Le paiement s'effectue en ligne, par carte bancaire, via la plateforme sécurisée Stripe. Les informations relatives au moyen de paiement ne sont jamais stockées par le Site ; elles sont traitées exclusivement par Stripe, prestataire certifié PCI-DSS. Voir notre page <a href="paiement-securise.html">Paiement sécurisé</a> pour plus de détails.</p>
+
+      <h2>5. Livraison</h2>
+      <p>Les commandes sont préparées avec soin, avec un contrôle qualité systématique avant expédition, dans un délai généralement compris entre 48 et 72 heures. Un numéro de suivi est communiqué par e-mail dès l'expédition. La livraison est offerte à partir de 80 € d'achat ; en dessous de ce montant, des frais de port sont appliqués et affichés avant validation du paiement. Le Site livre dans le monde entier.</p>
+
+      <h2>6. Droit de rétractation</h2>
+      <p>Conformément aux articles L.221-18 et suivants du Code de la consommation, le client dispose d'un délai de 14 jours à compter de la réception de sa commande pour exercer son droit de rétractation, sans avoir à justifier de motif ni à payer de pénalité. Pour exercer ce droit, il suffit d'en informer l'éditeur par e-mail à <a href="mailto:monpremierlivre.com@gmail.com">monpremierlivre.com@gmail.com</a>, en indiquant le numéro de commande.</p>
+
+      <h2>7. Retours et remboursements</h2>
+      <p>Les produits doivent être retournés dans leur état d'origine. Le remboursement est effectué dans un délai maximal de 14 jours à compter de la réception du produit retourné, par le même moyen de paiement que celui utilisé lors de la commande, sauf accord contraire. En cas de colis perdu ou endommagé pendant le transport, le client est invité à contacter l'éditeur avec son numéro de commande afin qu'une enquête soit ouverte auprès du transporteur.</p>
+
+      <h2>8. Garanties légales</h2>
+      <p>Tous les produits vendus sur le Site bénéficient de la garantie légale de conformité (articles L.217-3 et suivants du Code de la consommation) et de la garantie contre les vices cachés (articles 1641 et suivants du Code civil), sans supplément de prix.</p>
+
+      <h2>9. Responsabilité</h2>
+      <p>L'éditeur ne saurait être tenu responsable de l'inexécution du contrat en cas de force majeure, de rupture de stock, de perturbation ou grève totale ou partielle notamment des services postaux et moyens de transport.</p>
+
+      <h2>10. Médiation de la consommation</h2>
+      <p>Conformément aux articles L.616-1 et R.616-1 du Code de la consommation, en cas de litige non résolu directement avec l'éditeur, le client peut recourir gratuitement à un médiateur de la consommation. Le client peut également utiliser la plateforme européenne de règlement en ligne des litiges, accessible à l'adresse <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">ec.europa.eu/consumers/odr</a>.</p>
+
+      <h2>11. Droit applicable</h2>
+      <p>Les présentes CGV sont soumises au droit français. Tout litige relève, à défaut de résolution amiable, des juridictions françaises compétentes, sous réserve des dispositions impératives applicables aux consommateurs.</p>
+""")
+
+    legal_page("cgu", "Conditions générales d'utilisation",
+        "Conditions générales d'utilisation du site Mon Premier Livre.",
+        """
+      <p>Les présentes conditions générales d'utilisation (CGU) régissent l'accès et l'utilisation du site monpremierlivre.com (ci-après « le Site »). En naviguant sur le Site, l'utilisateur reconnaît avoir pris connaissance des présentes CGU et les accepter sans réserve.</p>
+
+      <h2>1. Objet</h2>
+      <p>Le Site permet la présentation et la vente en ligne de livres en feutrine pour enfants, ainsi que la consultation d'un blog dédié à l'éveil et à la lecture des tout-petits.</p>
+
+      <h2>2. Accès au site</h2>
+      <p>Le Site est accessible gratuitement depuis n'importe quel appareil disposant d'un accès à internet. L'éditeur met tout en œuvre pour assurer un accès continu au Site, sans garantie de résultat, notamment en cas de maintenance, de panne ou de force majeure.</p>
+
+      <h2>3. Compte client</h2>
+      <p>La création d'un compte client est facultative pour naviguer sur le Site, mais nécessaire pour suivre l'historique de ses commandes et gérer ses informations personnelles. L'utilisateur s'engage à fournir des informations exactes et à préserver la confidentialité de son mot de passe. Il peut à tout moment demander la suppression de son compte en écrivant à <a href="mailto:monpremierlivre.com@gmail.com">monpremierlivre.com@gmail.com</a>.</p>
+
+      <h2>4. Propriété intellectuelle</h2>
+      <p>L'ensemble des contenus du Site (textes, images, illustrations, articles de blog, charte graphique) est protégé par le droit de la propriété intellectuelle. Toute reproduction ou utilisation non autorisée est interdite.</p>
+
+      <h2>5. Comportement de l'utilisateur</h2>
+      <p>L'utilisateur s'engage à utiliser le Site conformément à sa destination et à ne pas porter atteinte à son bon fonctionnement, notamment en tentant d'accéder de manière frauduleuse à des données non destinées à être publiques.</p>
+
+      <h2>6. Liens hypertextes</h2>
+      <p>Le Site peut contenir des liens vers des sites tiers. L'éditeur n'exerce aucun contrôle sur ces sites et décline toute responsabilité quant à leur contenu.</p>
+
+      <h2>7. Limitation de responsabilité</h2>
+      <p>L'éditeur ne saurait être tenu responsable des dommages directs ou indirects résultant de l'utilisation du Site ou de l'impossibilité d'y accéder.</p>
+
+      <h2>8. Modification des CGU</h2>
+      <p>L'éditeur se réserve le droit de modifier les présentes CGU à tout moment. La version applicable est celle en vigueur au moment de la consultation du Site.</p>
+
+      <h2>9. Droit applicable</h2>
+      <p>Les présentes CGU sont soumises au droit français.</p>
+""")
+
+    legal_page("confidentialite", "Politique de confidentialité",
+        "Politique de confidentialité et de protection des données personnelles du site Mon Premier Livre (RGPD).",
+        """
+      <p>La présente politique de confidentialité décrit comment le site monpremierlivre.com (ci-après « le Site ») collecte, utilise et protège les données personnelles de ses utilisateurs, conformément au Règlement général sur la protection des données (RGPD) et à la loi Informatique et Libertés.</p>
+
+      <h2>1. Responsable du traitement</h2>
+      <p>Le responsable du traitement des données est Camille, entrepreneur individuel (micro-entreprise), Strasbourg, France. Contact : <a href="mailto:monpremierlivre.com@gmail.com">monpremierlivre.com@gmail.com</a>.</p>
+
+      <h2>2. Données collectées</h2>
+      <p>Selon l'usage du Site, les données suivantes peuvent être collectées : nom et prénom, adresse e-mail, mot de passe (chiffré), adresse de livraison, historique de commandes, et préférence d'abonnement à la newsletter. Le contenu du panier et de la liste de souhaits est stocké localement dans le navigateur (localStorage) et n'est transmis à nos serveurs qu'au moment de la commande.</p>
+
+      <h2>3. Finalités et bases légales</h2>
+      <ul>
+        <li><strong>Gestion des commandes et du compte client</strong> — exécution du contrat de vente.</li>
+        <li><strong>Envoi d'e-mails transactionnels</strong> (confirmation de commande, suivi de livraison, réinitialisation de mot de passe) — exécution du contrat.</li>
+        <li><strong>Envoi de la newsletter</strong> (nouveautés, articles de blog) — consentement explicite donné à l'inscription, retirable à tout moment via le lien de désabonnement présent dans chaque e-mail.</li>
+        <li><strong>Amélioration du Site</strong> — intérêt légitime de l'éditeur.</li>
+      </ul>
+
+      <h2>4. Destinataires des données</h2>
+      <p>Les données sont traitées par l'éditeur et par les prestataires techniques suivants, agissant en tant que sous-traitants :</p>
+      <ul>
+        <li><strong>Supabase</strong> — hébergement de la base de données et gestion des comptes clients.</li>
+        <li><strong>Stripe</strong> — traitement sécurisé des paiements en ligne. Le Site ne stocke jamais les données bancaires.</li>
+        <li><strong>Brevo</strong> — envoi des e-mails transactionnels et de la newsletter.</li>
+        <li><strong>Netlify</strong> — hébergement technique du Site.</li>
+      </ul>
+      <p>Ces prestataires n'utilisent les données que dans la limite nécessaire à l'exécution de leur prestation et ne les revendent à aucun tiers.</p>
+
+      <h2>5. Transferts hors Union européenne</h2>
+      <p>Certains de ces prestataires (notamment Stripe et Netlify) peuvent être amenés à traiter des données en dehors de l'Union européenne, en particulier aux États-Unis. Ces transferts sont encadrés par des garanties appropriées (clauses contractuelles types de la Commission européenne ou mécanismes équivalents mis en place par chaque prestataire).</p>
+
+      <h2>6. Durée de conservation</h2>
+      <p>Les données liées à un compte client sont conservées tant que le compte est actif. Les données relatives aux commandes sont conservées pendant la durée nécessaire au respect des obligations légales et comptables. En cas d'inscription à la newsletter sans compte associé, les données sont conservées jusqu'au désabonnement.</p>
+
+      <h2>7. Cookies et technologies similaires</h2>
+      <p>Le Site utilise le stockage local du navigateur (localStorage) à des fins strictement techniques : mémoriser le contenu du panier, la liste de souhaits et la langue choisie. Ces éléments ne sont pas des cookies de suivi publicitaire et ne sont partagés avec aucun tiers à des fins commerciales.</p>
+
+      <h2>8. Vos droits</h2>
+      <p>Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité de vos données, ainsi que du droit de retirer votre consentement à tout moment lorsque le traitement en dépend. Pour exercer ces droits, contactez-nous à <a href="mailto:monpremierlivre.com@gmail.com">monpremierlivre.com@gmail.com</a>. Vous disposez également du droit d'introduire une réclamation auprès de la Commission nationale de l'informatique et des libertés (CNIL) — <a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a>.</p>
+
+      <h2>9. Sécurité</h2>
+      <p>Des mesures techniques et organisationnelles raisonnables sont mises en œuvre pour protéger vos données contre tout accès non autorisé, perte ou divulgation, notamment via le chiffrement des mots de passe et le recours à des prestataires certifiés pour le traitement des paiements.</p>
+""")
+
+    legal_page("paiement-securise", "Paiement sécurisé",
+        "Comment vos paiements sont sécurisés sur le site Mon Premier Livre, via Stripe.",
+        """
+      <h2>Un paiement 100 % sécurisé</h2>
+      <p>Tous les paiements effectués sur le Site sont traités par Stripe, l'un des principaux prestataires de paiement en ligne au monde, certifié au plus haut niveau de sécurité de l'industrie bancaire (PCI-DSS niveau 1).</p>
+
+      <h2>Moyens de paiement acceptés</h2>
+      <p>Le paiement par carte bancaire (Visa, Mastercard) est accepté sur le Site.</p>
+
+      <h2>Vos données bancaires ne transitent jamais par nos serveurs</h2>
+      <p>Au moment du paiement, vous êtes redirigé vers l'environnement sécurisé de Stripe. Vos informations bancaires sont saisies et traitées directement par Stripe : elles ne sont à aucun moment transmises, visibles ou stockées par le Site. Cette architecture réduit au minimum les risques liés au traitement de données bancaires.</p>
+
+      <h2>Authentification renforcée</h2>
+      <p>Selon votre banque et le montant de la transaction, une authentification supplémentaire (3D Secure) peut vous être demandée directement par votre banque, afin de confirmer que vous êtes bien à l'origine du paiement.</p>
+
+      <h2>Confidentialité</h2>
+      <p>Pour en savoir plus sur la manière dont vos données sont traitées, consultez notre <a href="confidentialite.html">Politique de confidentialité</a>.</p>
+""")
+
+
 if __name__ == "__main__":
     build_index()
     build_produits()
@@ -573,4 +764,5 @@ if __name__ == "__main__":
     # build_compte()  # compte.html est maintenant maintenu à la main (vraie auth Supabase, voir git history)
     build_panier()
     build_success()
+    build_legal_pages()
     print("OK -", len(PRODUCTS), "produits,", len(ARTICLES), "articles,", len(REVIEWS), "avis")

@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Commande confirmée | Mon Premier Livre</title>
-<meta name="description" content="Merci pour votre commande Mon Premier Livre.">
+<title>Paiement sécurisé | Mon Premier Livre</title>
+<meta name="description" content="Comment vos paiements sont sécurisés sur le site Mon Premier Livre, via Stripe.">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-180.png">
@@ -44,16 +44,32 @@
 </header>
 
 <section class="page-hero">
-  <div class="container" style="text-align:center;max-width:560px">
-    <h1 data-i18n="success_title">Merci pour votre commande !</h1>
-    <p data-i18n="success_sub">Votre paiement a bien été reçu. Un e-mail de confirmation va vous être envoyé sous peu.</p>
-    <a href="produits.html" class="btn btn-primary" style="margin-top:20px" data-i18n="success_cta">Continuer mes achats</a>
+  <div class="container" style="max-width:760px">
+    <h1>Paiement sécurisé</h1>
   </div>
 </section>
-<script>
-  // La commande est confirmée : on vide le panier local.
-  localStorage.removeItem("mpl_cart");
-</script>
+<section style="padding-top:10px;padding-bottom:40px">
+  <div class="container">
+    <div class="article-body legal-body">
+
+      <h2>Un paiement 100 % sécurisé</h2>
+      <p>Tous les paiements effectués sur le Site sont traités par Stripe, l'un des principaux prestataires de paiement en ligne au monde, certifié au plus haut niveau de sécurité de l'industrie bancaire (PCI-DSS niveau 1).</p>
+
+      <h2>Moyens de paiement acceptés</h2>
+      <p>Le paiement par carte bancaire (Visa, Mastercard) est accepté sur le Site.</p>
+
+      <h2>Vos données bancaires ne transitent jamais par nos serveurs</h2>
+      <p>Au moment du paiement, vous êtes redirigé vers l'environnement sécurisé de Stripe. Vos informations bancaires sont saisies et traitées directement par Stripe : elles ne sont à aucun moment transmises, visibles ou stockées par le Site. Cette architecture réduit au minimum les risques liés au traitement de données bancaires.</p>
+
+      <h2>Authentification renforcée</h2>
+      <p>Selon votre banque et le montant de la transaction, une authentification supplémentaire (3D Secure) peut vous être demandée directement par votre banque, afin de confirmer que vous êtes bien à l'origine du paiement.</p>
+
+      <h2>Confidentialité</h2>
+      <p>Pour en savoir plus sur la manière dont vos données sont traitées, consultez notre <a href="confidentialite.html">Politique de confidentialité</a>.</p>
+
+    </div>
+  </div>
+</section>
 <div class="trust-bar">
   <div class="trust-grid">
     <div class="trust-item"><svg class="icon " width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 1 2.7 6"/><path d="M4 17v-4h4"/></svg><h4 data-i18n="trust1_h">Satisfait ou remboursé</h4><p data-i18n="trust1_p">Pendant 14 jours</p></div>
