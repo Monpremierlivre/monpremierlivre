@@ -73,7 +73,7 @@ exports.handler = async function (event) {
   try {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      payment_method_types: ["card", "paypal"],
+      payment_method_types: ["card"],
       line_items,
       allow_promotion_codes: true, // permet au client de saisir un code promo (ex : réduction 1re commande)
       shipping_address_collection: { allowed_countries: ["FR", "BE", "CH", "LU", "DE", "ES", "IT", "GB", "US", "CA"] },
