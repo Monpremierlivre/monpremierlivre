@@ -6,6 +6,7 @@ from blog_data import build_articles
 from reviews_data import build_reviews
 
 ROOT = os.path.dirname(__file__)
+SITE_URL = "https://monpremierlivre.com"
 ARTICLES = build_articles()
 REVIEWS = build_reviews()
 
@@ -28,7 +29,10 @@ def icon(name, size=20, cls=""):
     path = ICON_PATHS.get(name, "")
     return f'<svg class="icon {cls}" width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">{path}</svg>'
 
-def head(title, desc, active, depth=""):
+def head(title, desc, active, depth="", path="", image="assets/hero-desktop.jpg", noindex=False, extra=""):
+    canonical = f"{SITE_URL}/{path}"
+    og_image = image if image.startswith("http") else f"{SITE_URL}/{image}"
+    robots_tag = '<meta name="robots" content="noindex, nofollow">\n' if noindex else ""
     return f"""<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -36,11 +40,23 @@ def head(title, desc, active, depth=""):
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title} | Mon Premier Livre</title>
 <meta name="description" content="{desc}">
+<link rel="canonical" href="{canonical}">
+{robots_tag}<meta property="og:type" content="website">
+<meta property="og:site_name" content="Mon Premier Livre">
+<meta property="og:title" content="{title} | Mon Premier Livre">
+<meta property="og:description" content="{desc}">
+<meta property="og:url" content="{canonical}">
+<meta property="og:image" content="{og_image}">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{title} | Mon Premier Livre">
+<meta name="twitter:description" content="{desc}">
+<meta name="twitter:image" content="{og_image}">
 <link rel="icon" type="image/png" sizes="32x32" href="{depth}assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="{depth}assets/favicon-64.png">
 <link rel="apple-touch-icon" sizes="180x180" href="{depth}assets/favicon-180.png">
 <link rel="stylesheet" href="{depth}css/style.css">
-</head>
+{extra}</head>
 <body>
 """
 
@@ -161,7 +177,29 @@ def build_index():
       <div class="meta"><strong>{r['name']}</strong> <span>{time_text}</span></div>
     </div>\n"""
 
-    html = head("Livres en feutrine à déchirer pour bébé", "Mon Premier Livre : des livres en feutrine sensoriels et increvables, pensés pour éveiller le goût de lire dès les premiers mois.", "home")
+    org_jsonld = """<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "name": "Mon Premier Livre",
+      "url": "https://monpremierlivre.com/",
+      "logo": "https://monpremierlivre.com/assets/logo-full.png",
+      "email": "monpremierlivre.com@gmail.com",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "name": "Mon Premier Livre",
+      "url": "https://monpremierlivre.com/",
+      "inLanguage": "fr-FR"
+    }
+  ]
+}
+</script>
+"""
+    html = head("Livres en feutrine à déchirer pour bébé", "Mon Premier Livre : des livres en feutrine sensoriels et increvables, pensés pour éveiller le goût de lire dès les premiers mois.", "home", path="", extra=org_jsonld)
     html += header("home")
     html += f"""
 <section class="hero" style="padding:0">
@@ -228,7 +266,7 @@ def build_index():
         f.write(html)
 
 def build_produits():
-    html = head("Nos livres en feutrine", "Découvrez tous nos livres en feutrine à déchirer pour bébé et jeune enfant.", "shop")
+    html = head("Nos livres en feutrine", "Découvrez tous nos livres en feutrine à déchirer pour bébé et jeune enfant.", "shop", path="produits.html")
     html += header("shop")
     html += f"""
 <section class="page-hero">
@@ -251,7 +289,7 @@ def build_produit_pages():
     for p in PRODUCTS:
         others = [x for x in PRODUCTS if x["slug"] != p["slug"]][:4]
         cards = "\n".join(product_card(x, depth="../") for x in others)
-        html = head(p["name"], p["short"], "shop", depth="../")
+        html = head(p["name"], p["short"], "shop", depth="../", path=f"produit/{p['slug']}.html", image=p.get("image", "assets/hero-desktop.jpg"))
         html += header("shop", depth="../")
         if p.get("image"):
             pd_media_content = f'<img src="../{p["image"]}" alt="{p["name"]}" loading="lazy">'
@@ -324,7 +362,7 @@ CATEGORY_EN = {
 }
 
 def build_faq():
-    html = head("FAQ", "Toutes les réponses à vos questions sur la commande, la livraison, le paiement et nos livres en feutrine.", "faq")
+    html = head("FAQ", "Toutes les réponses à vos questions sur la commande, la livraison, le paiement et nos livres en feutrine.", "faq", path="faq.html")
     html += header("faq")
     html += """
 <section class="page-hero">
@@ -423,7 +461,7 @@ def build_blog_list():
             sidebar += f'<li><a href="#" class="{active}" data-blog-filter="{slug}"><span data-lang-block="fr">{name_fr}</span><span data-lang-block="en" style="display:none">{name_en}</span></a></li>\n'
         sidebar += '</ul></nav>'
 
-        html = head("Blog", "Conseils de lecture, développement de l'enfant et sélection de livres en feutrine par âge.", "blog")
+        html = head("Blog", "Conseils de lecture, développement de l'enfant et sélection de livres en feutrine par âge.", "blog", path="blog.html")
         html += header("blog")
         html += f"""
 <section class="page-hero">
@@ -454,7 +492,7 @@ def build_blog_list():
 
 def build_blog_articles():
     for a in ARTICLES:
-        html = head(a["title_fr"], a["excerpt_fr"], "blog", depth="../")
+        html = head(a["title_fr"], a["excerpt_fr"], "blog", depth="../", path=f"blog/{a['slug']}.html", image=a.get("image", "assets/hero-desktop.jpg"))
         html += header("blog", depth="../")
         html += f"""
 <section style="padding-top:44px">
@@ -478,7 +516,7 @@ def build_blog_articles():
             f.write(html)
 
 def build_compte():
-    html = head("Mon compte", "Connectez-vous ou créez votre compte Mon Premier Livre pour profiter de 10% sur votre première commande.", "account")
+    html = head("Mon compte", "Connectez-vous ou créez votre compte Mon Premier Livre pour profiter de 10% sur votre première commande.", "account", path="compte.html", noindex=True)
     html += header("account")
     html += """
 <section class="page-hero">
@@ -519,7 +557,7 @@ def build_compte():
         f.write(html)
 
 def build_panier():
-    html = head("Panier", "Votre panier Mon Premier Livre.", "cart")
+    html = head("Panier", "Votre panier Mon Premier Livre.", "cart", path="panier.html", noindex=True)
     html += header("cart")
     html += """
 <section class="page-hero">
@@ -544,7 +582,7 @@ def build_panier():
         f.write(html)
 
 def build_success():
-    html = head("Commande confirmée", "Merci pour votre commande Mon Premier Livre.", "cart")
+    html = head("Commande confirmée", "Merci pour votre commande Mon Premier Livre.", "cart", path="success.html", noindex=True)
     html += header("cart")
     html += """
 <section class="page-hero">
@@ -564,7 +602,7 @@ def build_success():
         f.write(html)
 
 def legal_page(slug, title, desc, body_html):
-    html = head(title, desc, "", "")
+    html = head(title, desc, "", "", path=f"{slug}.html", noindex=False)
     html += header("")
     html += f"""
 <section class="page-hero">
@@ -754,6 +792,49 @@ def build_legal_pages():
 """)
 
 
+LEGAL_SLUGS = ["mentions-legales", "cgv", "cgu", "confidentialite", "paiement-securise"]
+
+
+def build_sitemap():
+    from datetime import date
+    today = date.today().isoformat()
+    urls = []
+
+    def add(path, priority="0.5", changefreq="monthly"):
+        urls.append((f"{SITE_URL}/{path}", priority, changefreq))
+
+    add("", "1.0", "weekly")
+    add("produits.html", "0.9", "weekly")
+    add("faq.html", "0.6", "monthly")
+    add("blog.html", "0.7", "weekly")
+    for slug in LEGAL_SLUGS:
+        add(f"{slug}.html", "0.3", "yearly")
+    for a in ARTICLES:
+        add(f"blog/{a['slug']}.html", "0.6", "monthly")
+
+    body = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    for loc, priority, changefreq in urls:
+        body += f"  <url>\n    <loc>{loc}</loc>\n    <lastmod>{today}</lastmod>\n    <changefreq>{changefreq}</changefreq>\n    <priority>{priority}</priority>\n  </url>\n"
+    body += "</urlset>\n"
+    with open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8") as f:
+        f.write(body)
+
+
+def build_robots():
+    body = f"""User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /compte.html
+Disallow: /panier.html
+Disallow: /success.html
+Disallow: /suivi-commande.html
+
+Sitemap: {SITE_URL}/sitemap.xml
+"""
+    with open(os.path.join(ROOT, "robots.txt"), "w", encoding="utf-8") as f:
+        f.write(body)
+
+
 if __name__ == "__main__":
     build_index()
     build_produits()
@@ -765,4 +846,6 @@ if __name__ == "__main__":
     build_panier()
     build_success()
     build_legal_pages()
+    build_sitemap()
+    build_robots()
     print("OK -", len(PRODUCTS), "produits,", len(ARTICLES), "articles,", len(REVIEWS), "avis")

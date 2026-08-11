@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /compte.html
+Disallow: /panier.html
+Disallow: /success.html
+Disallow: /suivi-commande.html
+
+Sitemap: https://monpremierlivre.com/sitemap.xml

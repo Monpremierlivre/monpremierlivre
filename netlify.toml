@@ -7,6 +7,12 @@
   node_bundler = "esbuild"
 
 [[redirects]]
+  from = "https://monpremierlivre.fr/*"
+  to = "https://monpremierlivre.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/api/create-checkout-session"
   to = "/.netlify/functions/create-checkout-session"
   status = 200
