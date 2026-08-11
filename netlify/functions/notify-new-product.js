@@ -12,7 +12,7 @@
 
 const { createClient } = require("@supabase/supabase-js");
 const { escapeHtml, sendBrevoEmail } = require("./lib/email");
-const { listNewsletterSubscribers } = require("./lib/newsletter");
+const { listNewsletterSubscribers, buildUnsubscribeUrl } = require("./lib/newsletter");
 
 exports.handler = async function (event) {
   if (event.httpMethod !== "POST") {
@@ -58,7 +58,9 @@ exports.handler = async function (event) {
   }
 
   const productUrl = `https://monpremierlivre.com/produit.html?slug=${encodeURIComponent(product.slug)}`;
-  const html = `
+
+  function buildHtml(unsubscribeUrl) {
+    return `
   <div style="background:#FDFBF7;padding:40px 20px;font-family:Helvetica,Arial,sans-serif">
     <div style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:14px;overflow:hidden;border:1px solid #E7DFCE">
       <div style="background:#1D4E64;padding:26px 32px;text-align:center">
@@ -72,14 +74,17 @@ exports.handler = async function (event) {
         <a href="${productUrl}" style="display:inline-block;background:#1D4E64;color:#fff;text-decoration:none;padding:12px 26px;border-radius:999px;font-size:14px;font-weight:600">Découvrir ce livre</a>
       </div>
       <div style="background:#F7EFDD;padding:18px 32px;text-align:center">
-        <p style="font-size:12px;color:#8A7E70;margin:0">Mon Premier Livre — monpremierlivre.com@gmail.com<br><a href="https://monpremierlivre.com/compte.html" style="color:#8A7E70">Gérer mes préférences</a></p>
+        <p style="font-size:12px;color:#8A7E70;margin:0">Mon Premier Livre — monpremierlivre.com@gmail.com</p>
+        <p style="font-size:11px;color:#8A7E70;margin:8px 0 0"><a href="${unsubscribeUrl}" style="color:#8A7E70;text-decoration:underline">Se désabonner de la newsletter</a></p>
       </div>
     </div>
   </div>`;
+  }
 
   let sent = 0;
-  for (const email of subscribers) {
-    await sendBrevoEmail({ toEmail: email, subject: `Nouveau livre : ${product.name}`, html });
+  for (const sub of subscribers) {
+    const html = buildHtml(buildUnsubscribeUrl(sub.id));
+    await sendBrevoEmail({ toEmail: sub.email, subject: `Nouveau livre : ${product.name}`, html });
     sent++;
   }
 

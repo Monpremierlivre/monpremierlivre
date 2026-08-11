@@ -30,3 +30,8 @@
   from = "/api/send-newsletter-blast"
   to = "/.netlify/functions/send-newsletter-blast"
   status = 200
+
+[[redirects]]
+  from = "/api/unsubscribe"
+  to = "/.netlify/functions/unsubscribe"
+  status = 200
