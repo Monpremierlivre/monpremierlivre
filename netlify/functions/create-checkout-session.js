@@ -70,6 +70,11 @@ exports.handler = async function (event) {
     return { statusCode: 400, body: JSON.stringify({ error: "Aucun article valide dans le panier." }) };
   }
 
+  // Frais de livraison : 4,90 € en dessous de 80 € d'achat, offerte à partir de 80 €.
+  // (recalculé côté serveur à partir des vrais prix Supabase, jamais fait confiance au panier client)
+  const subtotalCents = line_items.reduce((sum, li) => sum + li.price_data.unit_amount * li.quantity, 0);
+  const shippingCents = subtotalCents >= 8000 ? 0 : 490;
+
   try {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -77,6 +82,15 @@ exports.handler = async function (event) {
       line_items,
       allow_promotion_codes: true, // permet au client de saisir un code promo (ex : réduction 1re commande)
       shipping_address_collection: { allowed_countries: ["FR", "BE", "CH", "LU", "DE", "ES", "IT", "GB", "US", "CA"] },
+      shipping_options: [
+        {
+          shipping_rate_data: {
+            type: "fixed_amount",
+            fixed_amount: { amount: shippingCents, currency: "eur" },
+            display_name: shippingCents === 0 ? "Livraison offerte" : "Livraison standard",
+          },
+        },
+      ],
       automatic_tax: { enabled: false },
       success_url: `${siteUrl}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}/panier.html`,
