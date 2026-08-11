@@ -364,12 +364,31 @@
     var email = document.getElementById("forgot-email").value.trim();
     if(!email){ setMsg("forgot-msg", t("Merci de saisir votre e-mail.", "Please enter your email."), false); return; }
     setMsg("forgot-msg", t("Envoi en cours…", "Sending…"), true);
-    var res = await sb.auth.resetPasswordForEmail(email, { redirectTo: "https://monpremierlivre.com/compte.html" });
-    if(res.error){ setMsg("forgot-msg", t("Erreur : ", "Error: ") + res.error.message, false); return; }
-    setMsg("forgot-msg", t(
-      "E-mail envoyé ! Vérifiez votre boîte mail pour réinitialiser votre mot de passe.",
-      "Email sent! Check your inbox to reset your password."
-    ), true);
+    try{
+      var resp = await fetch("/api/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email })
+      });
+      var data = await resp.json();
+      if(!resp.ok || data.error){
+        setMsg("forgot-msg", t("Erreur : ", "Error: ") + (data.error || resp.status), false);
+        return;
+      }
+      if(!data.exists){
+        setMsg("forgot-msg", t(
+          "Aucun compte n'est associé à cet e-mail. Vérifiez l'adresse ou créez un compte.",
+          "No account is associated with this email. Check the address or create an account."
+        ), false);
+        return;
+      }
+      setMsg("forgot-msg", t(
+        "E-mail envoyé ! Vérifiez votre boîte mail pour réinitialiser votre mot de passe.",
+        "Email sent! Check your inbox to reset your password."
+      ), true);
+    }catch(e){
+      setMsg("forgot-msg", t("Erreur réseau, merci de réessayer.", "Network error, please try again."), false);
+    }
   };
 
   document.addEventListener("DOMContentLoaded", function(){
