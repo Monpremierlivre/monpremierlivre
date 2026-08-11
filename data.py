@@ -216,9 +216,9 @@ FAQ = {
     ],
     "Paiement": [
         ("Quels moyens de paiement acceptez-vous ?",
-         "Nous acceptons la carte bancaire (Visa, Mastercard), ainsi que PayPal. Tous les paiements sont sécurisés.",
+         "Nous acceptons la carte bancaire (Visa, Mastercard). Tous les paiements sont sécurisés.",
          "What payment methods do you accept?",
-         "We accept credit cards (Visa, Mastercard) as well as PayPal. All payments are secure."),
+         "We accept credit cards (Visa, Mastercard). All payments are secure."),
         ("Mes données bancaires sont-elles sécurisées ?",
          "Oui, l'ensemble des transactions est chiffré et traité par un prestataire de paiement certifié. Nous ne stockons jamais vos données bancaires.",
          "Is my banking information secure?",
