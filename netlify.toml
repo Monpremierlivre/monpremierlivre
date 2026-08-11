@@ -15,3 +15,18 @@
   from = "/api/stripe-webhook"
   to = "/.netlify/functions/stripe-webhook"
   status = 200
+
+[[redirects]]
+  from = "/api/send-welcome-code"
+  to = "/.netlify/functions/send-welcome-code"
+  status = 200
+
+[[redirects]]
+  from = "/api/notify-new-product"
+  to = "/.netlify/functions/notify-new-product"
+  status = 200
+
+[[redirects]]
+  from = "/api/send-newsletter-blast"
+  to = "/.netlify/functions/send-newsletter-blast"
+  status = 200

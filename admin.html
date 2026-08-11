@@ -108,6 +108,7 @@
   <div class="tabs">
     <button class="tab-btn active" id="tab-btn-products" onclick="showTab('products')">Produits</button>
     <button class="tab-btn" id="tab-btn-orders" onclick="showTab('orders')">Commandes</button>
+    <button class="tab-btn" id="tab-btn-newsletter" onclick="showTab('newsletter')">Newsletter</button>
   </div>
 
   <div id="panel-products">
@@ -226,6 +227,26 @@
       </table>
     </div>
   </div>
+
+  <div id="panel-newsletter" style="display:none">
+    <div class="card">
+      <h2 style="margin-top:0">Newsletter</h2>
+      <p class="sub" style="margin-bottom:16px">
+        Les nouveaux livres publiés déclenchent automatiquement un e-mail aux abonnés.
+        Utilise ce formulaire pour annoncer un nouvel article de blog (ou toute autre actualité) aux clients inscrits à la newsletter.
+      </p>
+      <label>Titre</label>
+      <input type="text" id="news-title" placeholder="ex : 5 idées pour éveiller bébé aux livres">
+      <label>Lien de l'article</label>
+      <input type="text" id="news-url" placeholder="https://monpremierlivre.com/blog-article.html?slug=...">
+      <label>Extrait (optionnel)</label>
+      <textarea id="news-excerpt" placeholder="Une ou deux phrases pour donner envie de lire l'article"></textarea>
+      <div style="margin-top:18px">
+        <button class="btn-primary" onclick="sendNewsletterBlast()">Envoyer aux abonnés</button>
+      </div>
+      <div id="news-msg" class="msg"></div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -255,8 +276,47 @@ async function checkSession(){
 function showTab(name){
   document.getElementById("panel-products").style.display = name === "products" ? "block" : "none";
   document.getElementById("panel-orders").style.display = name === "orders" ? "block" : "none";
+  document.getElementById("panel-newsletter").style.display = name === "newsletter" ? "block" : "none";
   document.getElementById("tab-btn-products").classList.toggle("active", name === "products");
   document.getElementById("tab-btn-orders").classList.toggle("active", name === "orders");
+  document.getElementById("tab-btn-newsletter").classList.toggle("active", name === "newsletter");
+}
+
+async function sendNewsletterBlast(){
+  const msg = document.getElementById("news-msg");
+  const title = document.getElementById("news-title").value.trim();
+  const url = document.getElementById("news-url").value.trim();
+  const excerpt = document.getElementById("news-excerpt").value.trim();
+  if(!title || !url){
+    msg.textContent = "Le titre et le lien sont obligatoires.";
+    msg.className = "msg err";
+    return;
+  }
+  if(!confirm(`Envoyer cette newsletter à tous les abonnés maintenant ?\n\n"${title}"`)) return;
+
+  msg.textContent = "Envoi en cours…"; msg.className = "msg";
+  const { data: sessionData } = await sb.auth.getSession();
+  const token = sessionData && sessionData.session ? sessionData.session.access_token : null;
+  if(!token){
+    msg.textContent = "Session expirée, reconnecte-toi.";
+    msg.className = "msg err";
+    return;
+  }
+
+  try {
+    const res = await fetch("/api/send-newsletter-blast", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
+      body: JSON.stringify({ title, url, excerpt }),
+    });
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error || "Erreur d'envoi.");
+    msg.textContent = `Envoyé à ${data.sent} abonné(s) !`;
+    msg.className = "msg ok";
+  } catch(e){
+    msg.textContent = "Erreur : " + e.message;
+    msg.className = "msg err";
+  }
 }
 
 const STATUS_LABELS = { paid: "Payée", pending: "En attente", shipped: "Expédiée", failed: "Échouée" };

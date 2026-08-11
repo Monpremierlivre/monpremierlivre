@@ -59,6 +59,15 @@ h1,h2,h3{font-family:'Fraunces',serif;font-weight:500;color:var(--ink)}
 .btn-small{padding:9px 18px;font-size:13px}
 .btn-block{width:100%}
 
+/* promo banner (bandeau -10% nouveaux clients, toujours visible en haut) */
+.promo-banner{
+  display:block;position:sticky;top:0;z-index:110;background:var(--rose);color:#fff;
+  text-align:center;font-size:13px;font-weight:500;padding:9px 16px;font-family:'Inter',sans-serif;
+  text-decoration:none;
+}
+.promo-banner strong{font-weight:700;text-decoration:underline}
+@media (max-width:640px){ .promo-banner{font-size:12px;padding:8px 12px} }
+
 /* header */
 .site-header{
   position:sticky;top:0;z-index:100;background:rgba(250,247,243,.92);

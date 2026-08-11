@@ -17,17 +17,10 @@
 
 const Stripe = require("stripe");
 const { createClient } = require("@supabase/supabase-js");
-
-function escapeHtml(s) {
-  return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
-    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
-  });
-}
+const { escapeHtml, sendBrevoEmail } = require("./lib/email");
 
 async function sendOrderConfirmationEmail({ toEmail, items, subtotal, shipping, total, sessionId, shippingAddress }) {
-  const apiKey = process.env.BREVO_API_KEY;
-  const senderEmail = process.env.BREVO_SENDER_EMAIL || "monpremierlivre.com@gmail.com";
-  if (!apiKey || !toEmail) return; // pas bloquant : pas de clé ou pas d'email = on n'envoie rien
+  if (!toEmail) return; // pas bloquant : pas d'email = on n'envoie rien
 
   const itemRows = items
     .map(
@@ -75,24 +68,11 @@ async function sendOrderConfirmationEmail({ toEmail, items, subtotal, shipping, 
     </div>
   </div>`;
 
-  try {
-    await fetch("https://api.brevo.com/v3/smtp/email", {
-      method: "POST",
-      headers: {
-        accept: "application/json",
-        "api-key": apiKey,
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        sender: { name: "Mon Premier Livre", email: senderEmail },
-        to: [{ email: toEmail }],
-        subject: "Votre commande Mon Premier Livre est confirmée",
-        htmlContent: html,
-      }),
-    });
-  } catch (e) {
-    // non-bloquant : un échec d'envoi d'email ne doit jamais faire échouer le webhook
-  }
+  await sendBrevoEmail({
+    toEmail,
+    subject: "Votre commande Mon Premier Livre est confirmée",
+    html,
+  });
 }
 
 exports.handler = async function (event) {

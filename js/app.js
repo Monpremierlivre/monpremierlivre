@@ -80,6 +80,7 @@
       success_title:"Merci pour votre commande !",
       success_sub:"Votre paiement a bien été reçu. Un e-mail de confirmation va vous être envoyé sous peu.",
       success_cta:"Continuer mes achats",
+      promo_banner_text:'<strong>-10%</strong> sur votre première commande — créez votre compte gratuitement',
     },
     en: {
       nav_home:"Home", nav_shop:"Shop", nav_faq:"FAQ", nav_blog:"Blog",
@@ -159,6 +160,7 @@
       success_title:"Thank you for your order!",
       success_sub:"Your payment has been received. A confirmation e-mail will be sent to you shortly.",
       success_cta:"Continue shopping",
+      promo_banner_text:'<strong>-10%</strong> off your first order — create your free account',
     }
   };
 
@@ -437,6 +439,22 @@
     });
   }
 
+  // ---- Bandeau promo -10% (toujours visible en haut, au-dessus du header) ----
+  function initPromoBanner(){
+    if(document.querySelector(".promo-banner")) return; // évite les doublons si appelé 2 fois
+    var banner = document.createElement("a");
+    banner.href = "compte.html";
+    banner.className = "promo-banner";
+    banner.innerHTML = '<span data-i18n="promo_banner_text"></span>';
+    document.body.insertBefore(banner, document.body.firstChild);
+    var header = document.querySelector(".site-header");
+    function syncOffset(){
+      if(header) header.style.top = banner.offsetHeight + "px";
+    }
+    syncOffset();
+    window.addEventListener("resize", syncOffset);
+  }
+
   // ---- Mobile nav ----
   function initBurger(){
     var burger = document.querySelector(".burger");
@@ -468,6 +486,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", function(){
+    initPromoBanner();
     applyLang();
     initLangToggle();
     initWishlistButtons();
