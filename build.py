@@ -601,19 +601,24 @@ def build_success():
     with open(os.path.join(ROOT, "success.html"), "w", encoding="utf-8") as f:
         f.write(html)
 
-def legal_page(slug, title, desc, body_html):
-    html = head(title, desc, "", "", path=f"{slug}.html", noindex=False)
+def legal_page(slug, title_fr, title_en, desc, body_fr, body_en):
+    html = head(title_fr, desc, "", "", path=f"{slug}.html", noindex=False)
     html += header("")
     html += f"""
 <section class="page-hero">
   <div class="container" style="max-width:760px">
-    <h1>{title}</h1>
+    <h1><span data-lang-block="fr">{title_fr}</span><span data-lang-block="en" style="display:none">{title_en}</span></h1>
   </div>
 </section>
 <section style="padding-top:10px;padding-bottom:40px">
   <div class="container">
     <div class="article-body legal-body">
-{body_html}
+      <div data-lang-block="fr">
+{body_fr}
+      </div>
+      <div data-lang-block="en" style="display:none">
+{body_en}
+      </div>
     </div>
   </div>
 </section>
@@ -632,7 +637,7 @@ def build_legal_pages():
     #     À AJOUTER ICI dès réception : remplacer la ligne SIRET ci-dessous dans mentions-legales.
     #   - Contact : monpremierlivre.com@gmail.com uniquement (pas de téléphone publié)
 
-    legal_page("mentions-legales", "Mentions légales",
+    legal_page("mentions-legales", "Mentions légales", "Legal Notice",
         "Mentions légales du site Mon Premier Livre : éditeur, hébergement, propriété intellectuelle.",
         """
       <!-- TODO : ajouter la ligne "Numéro SIRET : ..." ci-dessous dès réception du numéro définitif. -->
@@ -653,9 +658,29 @@ def build_legal_pages():
 
       <h2>Droit applicable</h2>
       <p>Les présentes mentions légales sont soumises au droit français. En cas de litige, les juridictions françaises seront seules compétentes, sous réserve des règles impératives applicables aux consommateurs.</p>
+""",
+        """
+      <!-- TODO: add the "SIRET number: ..." line below once the definitive number is received. -->
+      <h2>Site publisher</h2>
+      <p>The website monpremierlivre.com (hereafter "the Site") is published by Camille, a sole trader operating under the French micro-entreprise scheme, based in Strasbourg, France.</p>
+      <p>VAT not applicable, article 293 B of the French General Tax Code.</p>
+      <p>Publication director: Camille.</p>
+      <p>Contact: <a href="mailto:monpremierlivre.com@gmail.com">monpremierlivre.com@gmail.com</a></p>
+
+      <h2>Hosting</h2>
+      <p>The Site is hosted by Netlify, Inc., 101 2nd Street, San Francisco, CA 94105, United States — <a href="https://www.netlify.com" target="_blank" rel="noopener">www.netlify.com</a>.</p>
+
+      <h2>Intellectual property</h2>
+      <p>All elements of the Site (text, illustrations, photographs, logo, layout, visual identity) are protected by copyright and remain the exclusive property of the publisher, unless otherwise stated. Any reproduction, representation or use, in whole or in part, without prior written authorisation, is prohibited and may constitute an infringement under articles L.335-2 et seq. of the French Intellectual Property Code.</p>
+
+      <h2>Personal data</h2>
+      <p>The processing of personal data collected via the Site is described in detail in our <a href="confidentialite.html">Privacy Policy</a>.</p>
+
+      <h2>Governing law</h2>
+      <p>This legal notice is governed by French law. In the event of a dispute, French courts shall have sole jurisdiction, subject to mandatory rules applicable to consumers.</p>
 """)
 
-    legal_page("cgv", "Conditions générales de vente",
+    legal_page("cgv", "Conditions générales de vente", "Terms and Conditions of Sale",
         "Conditions générales de vente du site Mon Premier Livre : commande, paiement, livraison, retours et garanties.",
         """
       <p>Les présentes conditions générales de vente (CGV) régissent les ventes de produits réalisées sur le site monpremierlivre.com, édité par Camille, entrepreneur individuel (micro-entreprise), Strasbourg, France. Toute commande passée sur le Site implique l'acceptation pleine et entière des présentes CGV.</p>
@@ -692,9 +717,45 @@ def build_legal_pages():
 
       <h2>11. Droit applicable</h2>
       <p>Les présentes CGV sont soumises au droit français. Tout litige relève, à défaut de résolution amiable, des juridictions françaises compétentes, sous réserve des dispositions impératives applicables aux consommateurs.</p>
+""",
+        """
+      <p>These terms and conditions of sale ("Terms") govern the sale of products on the website monpremierlivre.com, published by Camille, a sole trader (micro-entreprise), Strasbourg, France. Placing an order on the Site implies full and unreserved acceptance of these Terms.</p>
+
+      <h2>1. Products</h2>
+      <p>The Site sells tear-and-play felt books designed for children aged 0 to 3. The key characteristics of each product (dimensions, material, recommended age) are shown on its product page.</p>
+
+      <h2>2. Prices</h2>
+      <p>Prices are shown in euros. As the micro-entreprise benefits from the VAT exemption threshold (article 293 B of the French Tax Code), displayed prices do not include VAT. Shipping costs are shown before final order confirmation.</p>
+
+      <h2>3. Orders</h2>
+      <p>The customer selects the desired products, adds them to the cart, then confirms the order by entering their details and completing payment. A confirmation email summarising the order is sent automatically once payment is validated.</p>
+
+      <h2>4. Payment</h2>
+      <p>Payment is made online, by card, through the secure Stripe platform. Payment details are never stored by the Site; they are processed exclusively by Stripe, a PCI-DSS certified provider. See our <a href="paiement-securise.html">Secure Payment</a> page for more details.</p>
+
+      <h2>5. Shipping</h2>
+      <p>Orders are prepared with care, with a systematic quality check before shipment, generally within 48 to 72 hours. A tracking number is sent by email as soon as the order ships. Shipping is free from €80 of purchase; below that amount, shipping costs are applied and shown before payment confirmation. The Site ships worldwide.</p>
+
+      <h2>6. Right of withdrawal</h2>
+      <p>In accordance with articles L.221-18 et seq. of the French Consumer Code, the customer has 14 days from receipt of their order to exercise their right of withdrawal, without having to justify any reason or pay a penalty. To exercise this right, simply notify the publisher by email at <a href="mailto:monpremierlivre.com@gmail.com">monpremierlivre.com@gmail.com</a>, stating the order number.</p>
+
+      <h2>7. Returns and refunds</h2>
+      <p>Products must be returned in their original condition. Refunds are issued within a maximum of 14 days from receipt of the returned product, using the same payment method as the original order, unless otherwise agreed. If a parcel is lost or damaged in transit, the customer is invited to contact the publisher with their order number so that an inquiry can be opened with the carrier.</p>
+
+      <h2>8. Legal warranties</h2>
+      <p>All products sold on the Site benefit from the legal warranty of conformity (articles L.217-3 et seq. of the French Consumer Code) and the warranty against hidden defects (articles 1641 et seq. of the French Civil Code), at no extra cost.</p>
+
+      <h2>9. Liability</h2>
+      <p>The publisher shall not be held liable for failure to perform the contract in the event of force majeure, stock shortage, or total or partial disruption or strike affecting, in particular, postal services and means of transport.</p>
+
+      <h2>10. Consumer mediation</h2>
+      <p>In accordance with articles L.616-1 and R.616-1 of the French Consumer Code, in the event of a dispute not resolved directly with the publisher, the customer may use a consumer mediator free of charge. The customer may also use the European Online Dispute Resolution platform, available at <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">ec.europa.eu/consumers/odr</a>.</p>
+
+      <h2>11. Governing law</h2>
+      <p>These Terms are governed by French law. Failing an amicable resolution, any dispute falls under the jurisdiction of the competent French courts, subject to mandatory provisions applicable to consumers.</p>
 """)
 
-    legal_page("cgu", "Conditions générales d'utilisation",
+    legal_page("cgu", "Conditions générales d'utilisation", "Terms of Use",
         "Conditions générales d'utilisation du site Mon Premier Livre.",
         """
       <p>Les présentes conditions générales d'utilisation (CGU) régissent l'accès et l'utilisation du site monpremierlivre.com (ci-après « le Site »). En naviguant sur le Site, l'utilisateur reconnaît avoir pris connaissance des présentes CGU et les accepter sans réserve.</p>
@@ -725,9 +786,39 @@ def build_legal_pages():
 
       <h2>9. Droit applicable</h2>
       <p>Les présentes CGU sont soumises au droit français.</p>
+""",
+        """
+      <p>These terms of use ("Terms of Use") govern access to and use of the website monpremierlivre.com (hereafter "the Site"). By browsing the Site, the user acknowledges having read these Terms of Use and accepts them without reservation.</p>
+
+      <h2>1. Purpose</h2>
+      <p>The Site presents and sells felt books for children online, and hosts a blog dedicated to early childhood development and reading.</p>
+
+      <h2>2. Access to the site</h2>
+      <p>The Site is freely accessible from any device with an internet connection. The publisher makes every effort to ensure continuous access to the Site, without guarantee of result, in particular in the event of maintenance, technical failure or force majeure.</p>
+
+      <h2>3. Customer account</h2>
+      <p>Creating a customer account is optional to browse the Site, but is required to track order history and manage personal information. The user agrees to provide accurate information and to keep their password confidential. The user may request deletion of their account at any time by writing to <a href="mailto:monpremierlivre.com@gmail.com">monpremierlivre.com@gmail.com</a>.</p>
+
+      <h2>4. Intellectual property</h2>
+      <p>All content on the Site (text, images, illustrations, blog articles, visual identity) is protected by intellectual property law. Any unauthorised reproduction or use is prohibited.</p>
+
+      <h2>5. User conduct</h2>
+      <p>The user agrees to use the Site in accordance with its intended purpose and not to interfere with its proper functioning, in particular by attempting to fraudulently access data not intended to be public.</p>
+
+      <h2>6. Hyperlinks</h2>
+      <p>The Site may contain links to third-party websites. The publisher has no control over these sites and disclaims any liability regarding their content.</p>
+
+      <h2>7. Limitation of liability</h2>
+      <p>The publisher shall not be held liable for direct or indirect damages resulting from use of the Site or the inability to access it.</p>
+
+      <h2>8. Changes to these Terms of Use</h2>
+      <p>The publisher reserves the right to modify these Terms of Use at any time. The applicable version is the one in effect at the time the Site is accessed.</p>
+
+      <h2>9. Governing law</h2>
+      <p>These Terms of Use are governed by French law.</p>
 """)
 
-    legal_page("confidentialite", "Politique de confidentialité",
+    legal_page("confidentialite", "Politique de confidentialité", "Privacy Policy",
         "Politique de confidentialité et de protection des données personnelles du site Mon Premier Livre (RGPD).",
         """
       <p>La présente politique de confidentialité décrit comment le site monpremierlivre.com (ci-après « le Site ») collecte, utilise et protège les données personnelles de ses utilisateurs, conformément au Règlement général sur la protection des données (RGPD) et à la loi Informatique et Libertés.</p>
@@ -770,9 +861,51 @@ def build_legal_pages():
 
       <h2>9. Sécurité</h2>
       <p>Des mesures techniques et organisationnelles raisonnables sont mises en œuvre pour protéger vos données contre tout accès non autorisé, perte ou divulgation, notamment via le chiffrement des mots de passe et le recours à des prestataires certifiés pour le traitement des paiements.</p>
+""",
+        """
+      <p>This privacy policy describes how the website monpremierlivre.com (hereafter "the Site") collects, uses and protects the personal data of its users, in accordance with the General Data Protection Regulation (GDPR) and the French Data Protection Act.</p>
+
+      <h2>1. Data controller</h2>
+      <p>The data controller is Camille, a sole trader (micro-entreprise), Strasbourg, France. Contact: <a href="mailto:monpremierlivre.com@gmail.com">monpremierlivre.com@gmail.com</a>.</p>
+
+      <h2>2. Data collected</h2>
+      <p>Depending on how the Site is used, the following data may be collected: first and last name, email address, password (encrypted), delivery address, order history, and newsletter subscription preference. Cart and wishlist content is stored locally in the browser (localStorage) and is only sent to our servers at the time of order.</p>
+
+      <h2>3. Purposes and legal bases</h2>
+      <ul>
+        <li><strong>Order and account management</strong> — performance of the sales contract.</li>
+        <li><strong>Transactional emails</strong> (order confirmation, shipping updates, password reset) — performance of the contract.</li>
+        <li><strong>Newsletter</strong> (new products, blog articles) — explicit consent given at sign-up, which can be withdrawn at any time via the unsubscribe link included in every email.</li>
+        <li><strong>Site improvement</strong> — legitimate interest of the publisher.</li>
+      </ul>
+
+      <h2>4. Recipients of the data</h2>
+      <p>Data is processed by the publisher and by the following technical service providers, acting as data processors:</p>
+      <ul>
+        <li><strong>Supabase</strong> — database hosting and customer account management.</li>
+        <li><strong>Stripe</strong> — secure online payment processing. The Site never stores payment card data.</li>
+        <li><strong>Brevo</strong> — sending transactional emails and the newsletter.</li>
+        <li><strong>Netlify</strong> — technical hosting of the Site.</li>
+      </ul>
+      <p>These providers only use the data to the extent necessary to perform their service and do not resell it to any third party.</p>
+
+      <h2>5. Transfers outside the European Union</h2>
+      <p>Some of these providers (notably Stripe and Netlify) may process data outside the European Union, in particular in the United States. These transfers are governed by appropriate safeguards (European Commission standard contractual clauses or equivalent mechanisms implemented by each provider).</p>
+
+      <h2>6. Retention period</h2>
+      <p>Data linked to a customer account is kept for as long as the account remains active. Order-related data is kept for as long as necessary to comply with legal and accounting obligations. For newsletter sign-ups without an associated account, data is kept until unsubscription.</p>
+
+      <h2>7. Cookies and similar technologies</h2>
+      <p>The Site uses browser local storage (localStorage) for strictly technical purposes: remembering cart content, the wishlist, and the chosen language. These are not advertising tracking cookies and are not shared with any third party for commercial purposes.</p>
+
+      <h2>8. Your rights</h2>
+      <p>In accordance with the GDPR, you have the right to access, rectify, erase, restrict, object to, and port your data, as well as the right to withdraw your consent at any time where processing relies on it. To exercise these rights, contact us at <a href="mailto:monpremierlivre.com@gmail.com">monpremierlivre.com@gmail.com</a>. You also have the right to lodge a complaint with the French data protection authority (CNIL) — <a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a>.</p>
+
+      <h2>9. Security</h2>
+      <p>Reasonable technical and organisational measures are implemented to protect your data against unauthorised access, loss or disclosure, in particular through password encryption and the use of certified providers for payment processing.</p>
 """)
 
-    legal_page("paiement-securise", "Paiement sécurisé",
+    legal_page("paiement-securise", "Paiement sécurisé", "Secure Payment",
         "Comment vos paiements sont sécurisés sur le site Mon Premier Livre, via Stripe.",
         """
       <h2>Un paiement 100 % sécurisé</h2>
@@ -789,6 +922,22 @@ def build_legal_pages():
 
       <h2>Confidentialité</h2>
       <p>Pour en savoir plus sur la manière dont vos données sont traitées, consultez notre <a href="confidentialite.html">Politique de confidentialité</a>.</p>
+""",
+        """
+      <h2>100% secure payment</h2>
+      <p>All payments made on the Site are processed by Stripe, one of the world's leading online payment providers, certified to the highest security standard in the banking industry (PCI-DSS Level 1).</p>
+
+      <h2>Accepted payment methods</h2>
+      <p>Payment by card (Visa, Mastercard) is accepted on the Site.</p>
+
+      <h2>Your card details never pass through our servers</h2>
+      <p>At checkout, you are redirected to Stripe's secure environment. Your payment details are entered and processed directly by Stripe: they are never transmitted to, visible to, or stored by the Site. This design minimises the risks associated with handling payment data.</p>
+
+      <h2>Additional authentication</h2>
+      <p>Depending on your bank and the transaction amount, additional authentication (3D Secure) may be requested directly by your bank, to confirm that you are indeed the one initiating the payment.</p>
+
+      <h2>Privacy</h2>
+      <p>To learn more about how your data is processed, see our <a href="confidentialite.html">Privacy Policy</a>.</p>
 """)
 
 
