@@ -35,3 +35,8 @@
   from = "/api/unsubscribe"
   to = "/.netlify/functions/unsubscribe"
   status = 200
+
+[[redirects]]
+  from = "/api/track-order"
+  to = "/.netlify/functions/track-order"
+  status = 200

@@ -81,6 +81,16 @@
       success_sub:"Votre paiement a bien été reçu. Un e-mail de confirmation va vous être envoyé sous peu.",
       success_cta:"Continuer mes achats",
       promo_banner_text:'<strong>-10%</strong> sur votre première commande — créez votre compte gratuitement',
+      track_title:"Suivi de commande",
+      track_loading:"Chargement de votre commande…",
+      track_error:"Lien invalide ou commande introuvable. Vérifiez que vous avez cliqué sur le lien complet reçu par e-mail.",
+      track_date_label:"Commande passée le",
+      track_total_label:"Total",
+      track_status_label:"Statut de la commande",
+      track_number_label:"Numéro de suivi",
+      track_link_cta:"Suivre mon colis",
+      track_no_shipping_yet:"Votre numéro de suivi apparaîtra ici dès l'expédition de votre commande.",
+      track_account_note:"Créez un compte avec la même adresse e-mail pour retrouver automatiquement toutes vos commandes.",
     },
     en: {
       nav_home:"Home", nav_shop:"Shop", nav_faq:"FAQ", nav_blog:"Blog",
@@ -161,6 +171,16 @@
       success_sub:"Your payment has been received. A confirmation e-mail will be sent to you shortly.",
       success_cta:"Continue shopping",
       promo_banner_text:'<strong>-10%</strong> off your first order — create your free account',
+      track_title:"Order tracking",
+      track_loading:"Loading your order…",
+      track_error:"Invalid link or order not found. Make sure you clicked the full link from the confirmation email.",
+      track_date_label:"Order placed on",
+      track_total_label:"Total",
+      track_status_label:"Order status",
+      track_number_label:"Tracking number",
+      track_link_cta:"Track my package",
+      track_no_shipping_yet:"Your tracking number will appear here once your order ships.",
+      track_account_note:"Create an account with the same email address to automatically find all your orders.",
     }
   };
 
