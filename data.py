@@ -186,9 +186,9 @@ FAQ = {
     ],
     "Livraison": [
         ("Quels sont les délais de livraison ?",
-         "Nous expédions votre commande dans les 72 heures suivant sa réception. Vous pouvez ensuite suivre votre colis directement depuis votre compte.",
+         "Nos produits étant destinés aux tout-petits, nous effectuons un contrôle qualité rigoureux avant chaque expédition, afin de vous garantir un produit en toute sérénité. C'est pourquoi nos commandes sont généralement expédiées sous 48 à 72 heures — les bonnes choses méritent un peu de patience. Une fois la commande expédiée, vous pouvez la suivre directement depuis votre compte.",
          "What are the delivery times?",
-         "We ship your order within 72 hours of receiving it. You can then track your parcel directly from your account."),
+         "Because our products are designed for babies and toddlers, we carry out a rigorous quality check before every shipment, to make sure you receive a product you can trust. That's why orders are usually shipped within 48 to 72 hours — good things are worth the wait. Once your order has shipped, you can track it directly from your account."),
         ("La livraison est-elle gratuite ?",
          "La livraison est offerte dès 80€ d'achat. En dessous de ce montant, des frais de port raisonnables sont appliqués et affichés avant validation du paiement.",
          "Is delivery free?",
