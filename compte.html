@@ -101,7 +101,16 @@
         <div class="field"><label data-i18n="field_email">E-mail</label><input type="email" id="login-email" placeholder="vous@exemple.fr" autocomplete="username"></div>
         <div class="field"><label data-i18n="field_password">Mot de passe</label><input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password"></div>
         <button class="btn btn-primary btn-block" data-i18n="login_btn" onclick="doLogin()">Se connecter</button>
+        <p style="margin-top:12px;text-align:right">
+          <a href="#" id="forgot-password-link" style="font-size:13px;color:var(--muted)" data-i18n="forgot_password_link">Mot de passe oublié ?</a>
+        </p>
         <p id="login-msg" style="font-size:13px;margin-top:10px"></p>
+
+        <div id="forgot-password-box" style="display:none;margin-top:18px;padding-top:18px;border-top:1px solid var(--border)">
+          <div class="field"><label data-i18n="field_email">E-mail</label><input type="email" id="forgot-email" placeholder="vous@exemple.fr" autocomplete="username"></div>
+          <button class="btn btn-outline btn-block" onclick="doForgotPassword()" data-i18n="forgot_password_send">Envoyer le lien de réinitialisation</button>
+          <p id="forgot-msg" style="font-size:13px;margin-top:10px"></p>
+        </div>
       </div>
       <div class="auth-panel" data-panel="signup" style="display:none">
         <div class="discount-note" data-i18n="signup_discount_note">-10% sur votre première commande dès la création de votre compte.</div>
@@ -348,6 +357,50 @@
     await sb.auth.signOut();
     location.reload();
   };
+
+  window.doForgotPassword = async function(){
+    var email = document.getElementById("forgot-email").value.trim();
+    if(!email){ setMsg("forgot-msg", t("Merci de saisir votre e-mail.", "Please enter your email."), false); return; }
+    setMsg("forgot-msg", t("Envoi en cours…", "Sending…"), true);
+    var res = await sb.auth.resetPasswordForEmail(email, { redirectTo: "https://monpremierlivre.com/compte.html" });
+    if(res.error){ setMsg("forgot-msg", t("Erreur : ", "Error: ") + res.error.message, false); return; }
+    setMsg("forgot-msg", t(
+      "E-mail envoyé ! Vérifiez votre boîte mail pour réinitialiser votre mot de passe.",
+      "Email sent! Check your inbox to reset your password."
+    ), true);
+  };
+
+  document.addEventListener("DOMContentLoaded", function(){
+    var link = document.getElementById("forgot-password-link");
+    if(link){
+      link.addEventListener("click", function(e){
+        e.preventDefault();
+        var box = document.getElementById("forgot-password-box");
+        var visible = box.style.display !== "none";
+        box.style.display = visible ? "none" : "block";
+        if(!visible){
+          var loginEmail = document.getElementById("login-email").value.trim();
+          document.getElementById("forgot-email").value = loginEmail;
+        }
+      });
+    }
+  });
+
+  // Quand le client clique le lien reçu par e-mail (via doForgotPassword ci-dessus), Supabase
+  // le reconnecte automatiquement et déclenche cet événement : on l'amène directement sur
+  // "Modifier mon mot de passe" pour qu'il puisse en choisir un nouveau.
+  sb.auth.onAuthStateChange(function(event, session){
+    if(event === "PASSWORD_RECOVERY" && session){
+      var email = session.user.email;
+      showAccountView(email);
+      loadMyOrders(email);
+      if(window.showAccountTab) window.showAccountTab("password");
+      setMsg("password-msg", t(
+        "Merci de définir votre nouveau mot de passe ci-dessous.",
+        "Please set your new password below."
+      ), true);
+    }
+  });
 
   document.addEventListener("DOMContentLoaded", async function(){
     var res = await sb.auth.getSession();

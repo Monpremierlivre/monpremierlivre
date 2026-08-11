@@ -91,6 +91,8 @@
       track_link_cta:"Suivre mon colis",
       track_no_shipping_yet:"Votre numéro de suivi apparaîtra ici dès l'expédition de votre commande.",
       track_account_note:"Créez un compte avec la même adresse e-mail pour retrouver automatiquement toutes vos commandes.",
+      forgot_password_link:"Mot de passe oublié ?",
+      forgot_password_send:"Envoyer le lien de réinitialisation",
     },
     en: {
       nav_home:"Home", nav_shop:"Shop", nav_faq:"FAQ", nav_blog:"Blog",
@@ -181,6 +183,8 @@
       track_link_cta:"Track my package",
       track_no_shipping_yet:"Your tracking number will appear here once your order ships.",
       track_account_note:"Create an account with the same email address to automatically find all your orders.",
+      forgot_password_link:"Forgot password?",
+      forgot_password_send:"Send reset link",
     }
   };
 
