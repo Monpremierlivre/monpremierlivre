@@ -99,7 +99,7 @@ def trust_bar():
   <div class="trust-grid">
     <div class="trust-item">{icon('rotate',26)}<h4 data-i18n="trust1_h">Satisfait ou remboursé</h4><p data-i18n="trust1_p">Pendant 14 jours</p></div>
     <div class="trust-item">{icon('truck',26)}<h4 data-i18n="trust2_h">Livraison suivie offerte</h4><p data-i18n="trust2_p">À partir de 80€ d'achat</p></div>
-    <div class="trust-item">{icon('card',26)}<h4 data-i18n="trust3_h">Paiement sécurisé</h4><p data-i18n="trust3_p">Par carte bancaire ou PayPal</p></div>
+    <div class="trust-item">{icon('card',26)}<h4 data-i18n="trust3_h">Paiement sécurisé</h4><p data-i18n="trust3_p">Par carte bancaire</p></div>
     <div class="trust-item">{icon('message',26)}<h4 data-i18n="trust4_h">Réponse sous 24h</h4><p data-i18n="trust4_p">Notre équipe à votre écoute</p></div>
   </div>
 </div>
