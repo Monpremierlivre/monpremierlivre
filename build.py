@@ -58,6 +58,17 @@ def head(title, desc, active, depth="", path="", image="assets/hero-desktop.jpg"
 <link rel="stylesheet" href="{depth}css/style.css">
 {extra}</head>
 <body>
+<script>
+window.axeptioSettings = {{
+  clientId: "6a7c5e4b5d2f7eee05c0b82d",
+  cookiesVersion: "mon-premier-livre-fr"
+}};
+(function(d, s) {{
+  var t = d.getElementsByTagName(s)[0], e = d.createElement(s);
+  e.async = true; e.src = "//static.axept.io/tcf/sdk.js"; e.type = "module";
+  t.parentNode.insertBefore(e, t);
+}})(document, "script");
+</script>
 """
 
 def header(active, depth=""):
@@ -133,7 +144,6 @@ def footer(depth=""):
         <li><a href="{depth}faq.html#Livraison" data-i18n="f_shipping">Livraison &amp; suivi</a></li>
         <li><a href="{depth}compte.html" data-i18n="f_track">Suivre ma commande</a></li>
         <li><a href="{depth}faq.html#Compte-retours" data-i18n="f_returns">Retours et remboursement</a></li>
-        <li><a href="mailto:monpremierlivre.com@gmail.com" data-i18n="f_contact_form">Formulaire de contact</a></li>
       </ul>
     </div>
   </div>
@@ -844,6 +854,7 @@ def build_legal_pages():
         <li><strong>Stripe</strong> — traitement sécurisé des paiements en ligne. Le Site ne stocke jamais les données bancaires.</li>
         <li><strong>Brevo</strong> — envoi des e-mails transactionnels et de la newsletter.</li>
         <li><strong>Netlify</strong> — hébergement technique du Site.</li>
+        <li><strong>Axeptio</strong> — gestion du recueil et de la conservation de votre consentement aux cookies.</li>
       </ul>
       <p>Ces prestataires n'utilisent les données que dans la limite nécessaire à l'exécution de leur prestation et ne les revendent à aucun tiers.</p>
 
@@ -855,6 +866,7 @@ def build_legal_pages():
 
       <h2>7. Cookies et technologies similaires</h2>
       <p>Le Site utilise le stockage local du navigateur (localStorage) à des fins strictement techniques : mémoriser le contenu du panier, la liste de souhaits et la langue choisie. Ces éléments ne sont pas des cookies de suivi publicitaire et ne sont partagés avec aucun tiers à des fins commerciales.</p>
+      <p>Le Site utilise également des cookies techniques strictement nécessaires à son fonctionnement (authentification, sécurité du paiement). Tout cookie non strictement nécessaire (mesure d'audience, publicité) n'est déposé qu'après recueil de votre consentement via notre bandeau de gestion des cookies, opéré par Axeptio. Vous pouvez à tout moment modifier vos préférences en cliquant sur l'icône de gestion des cookies disponible en bas de page.</p>
 
       <h2>8. Vos droits</h2>
       <p>Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité de vos données, ainsi que du droit de retirer votre consentement à tout moment lorsque le traitement en dépend. Pour exercer ces droits, contactez-nous à <a href="mailto:monpremierlivre.com@gmail.com">monpremierlivre.com@gmail.com</a>. Vous disposez également du droit d'introduire une réclamation auprès de la Commission nationale de l'informatique et des libertés (CNIL) — <a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a>.</p>
@@ -886,6 +898,7 @@ def build_legal_pages():
         <li><strong>Stripe</strong> — secure online payment processing. The Site never stores payment card data.</li>
         <li><strong>Brevo</strong> — sending transactional emails and the newsletter.</li>
         <li><strong>Netlify</strong> — technical hosting of the Site.</li>
+        <li><strong>Axeptio</strong> — collection and storage of your cookie consent choices.</li>
       </ul>
       <p>These providers only use the data to the extent necessary to perform their service and do not resell it to any third party.</p>
 
@@ -897,6 +910,7 @@ def build_legal_pages():
 
       <h2>7. Cookies and similar technologies</h2>
       <p>The Site uses browser local storage (localStorage) for strictly technical purposes: remembering cart content, the wishlist, and the chosen language. These are not advertising tracking cookies and are not shared with any third party for commercial purposes.</p>
+      <p>The Site also uses technical cookies strictly necessary for its operation (authentication, payment security). Any cookie that is not strictly necessary (audience measurement, advertising) is only set after your consent has been collected via our cookie management banner, operated by Axeptio. You can change your preferences at any time by clicking the cookie management icon available at the bottom of the page.</p>
 
       <h2>8. Your rights</h2>
       <p>In accordance with the GDPR, you have the right to access, rectify, erase, restrict, object to, and port your data, as well as the right to withdraw your consent at any time where processing relies on it. To exercise these rights, contact us at <a href="mailto:monpremierlivre.com@gmail.com">monpremierlivre.com@gmail.com</a>. You also have the right to lodge a complaint with the French data protection authority (CNIL) — <a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a>.</p>
