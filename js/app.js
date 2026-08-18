@@ -495,6 +495,7 @@
     var langToggle = document.querySelector(".lang-toggle");
     if(langToggle){
       var langClone = langToggle.cloneNode(true);
+      langClone.classList.add("lang-toggle-plain");
       langClone.style.marginTop = "6px";
       wrap.appendChild(langClone);
     }

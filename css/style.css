@@ -84,6 +84,9 @@ h1,h2,h3{font-family:'Fraunces',serif;font-weight:500;color:var(--ink)}
 .lang-toggle{display:flex;border:1px solid var(--border);border-radius:999px;overflow:hidden;font-size:12.5px}
 .lang-toggle button{padding:6px 12px;border:none;background:transparent;cursor:pointer;color:var(--muted);font-family:'Inter',sans-serif}
 .lang-toggle button.active{background:var(--dustyblue-dark);color:#fff}
+.lang-toggle-plain{border:none;border-radius:0;overflow:visible;gap:14px;font-size:15px}
+.lang-toggle-plain button{padding:0;color:var(--ink-2);font-weight:500}
+.lang-toggle-plain button.active{background:none;color:var(--dustyblue-dark);font-weight:700}
 .icon-link{position:relative;font-size:19px;color:var(--ink-2);cursor:pointer}
 .icon-link .badge{
   position:absolute;top:-8px;right:-10px;background:var(--rose);color:#fff;
