@@ -489,6 +489,15 @@
     navs.forEach(function(nav){
       nav.querySelectorAll("a").forEach(function(a){ wrap.appendChild(a.cloneNode(true)); });
     });
+    // Le sélecteur de langue vit normalement dans le header desktop ; sur mobile
+    // on le retire de la barre du haut (voir CSS) et on en clone une copie ici,
+    // en dernier élément du menu, pour qu'il reste accessible.
+    var langToggle = document.querySelector(".lang-toggle");
+    if(langToggle){
+      var langClone = langToggle.cloneNode(true);
+      langClone.style.marginTop = "6px";
+      wrap.appendChild(langClone);
+    }
     document.querySelector(".site-header").appendChild(wrap);
     burger.addEventListener("click", function(){
       wrap.style.display = wrap.style.display === "flex" ? "none" : "flex";
@@ -512,6 +521,7 @@
   document.addEventListener("DOMContentLoaded", function(){
     initPromoBanner();
     applyLang();
+    initBurger();
     initLangToggle();
     initWishlistButtons();
     initCartButtons();
@@ -521,7 +531,6 @@
     initFaqNav();
     initBlogFilter();
     initAuthTabs();
-    initBurger();
     initPageFlip();
     updateBadges();
   });
